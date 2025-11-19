@@ -9,7 +9,7 @@ class CustomUserManager(BaseUserManager):
 
     def create_user(self, email, password=None, **extra_fields):
         if not email:
-            raise ValueError("Користувач повинен мати email")
+            raise ValueError("User should have email")
 
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
@@ -23,9 +23,9 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault("is_active", True)
 
         if extra_fields.get("is_staff") is not True:
-            raise ValueError("superuser повинен мати is_staff=True.")
+            raise ValueError("superuser should have is_staff=True.")
         if extra_fields.get("is_superuser") is not True:
-            raise ValueError("superuser повинен мати is_superuser=True.")
+            raise ValueError("superuser should have is_superuser=True.")
 
         return self.create_user(email, password, **extra_fields)
 
