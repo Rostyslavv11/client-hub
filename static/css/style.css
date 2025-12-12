@@ -1,0 +1,285 @@
+body {
+    font-family: "Poppins", sans-serif;
+    padding-top: 70px;
+}
+
+section {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+}
+
+.navbar-nav {
+    flex: 1;
+    justify-content: center;
+    gap: 4rem;
+}
+
+.nav-link {
+  padding: 0.5rem 0.9rem;
+  border-radius: 0.5rem;
+  transition: 0.2s;
+}
+
+.nav-link:hover {
+  background-color: #1f2937;
+  color: #fff !important;
+}
+
+.hero {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 3rem 2rem;
+    border: 2px solid #1e2a44;
+    border-radius: 16px;
+}
+
+.hero-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.hero-subtitle {
+  font-size: 1.05rem;
+  color: #9ca3af;
+  max-width: 32rem;
+}
+
+.hero-buttons .btn-lg {
+  padding-inline: 1.8rem;
+  padding-block: 0.7rem;
+  border-radius: 999px;
+}
+
+.hero-image {
+  width: 100%;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.section-subtitle {
+  color: #9ca3af;
+  font-size: 1rem;
+}
+
+/* КАРТКИ */
+.feature-card {
+  background: #ffffff;
+  color: #0f172a;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  border: 1px solid #e5e7eb;
+  transition: 0.25s;
+  height: 100%;
+}
+
+/* Hover ефект */
+.feature-card:hover {
+  transform: translateY(-5px);
+  border-color: #3b82f6;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* active — синя рамка як на твоєму прикладі */
+.feature-card.active {
+  border-color: #3b82f6;
+}
+
+/* Іконки */
+.icon-box {
+  width: 46px;
+  height: 46px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #3b82f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin: 0 auto 15px auto;
+}
+
+.feature-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.feature-text {
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+/* FOOTER */
+.footer {
+    background-color: #0b1220;
+    color: #d1d5db;
+}
+
+.footer-logo {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.footer-text {
+    color: #9ca3af;
+    font-size: 0.95rem;
+    max-width: 280px;
+}
+
+/* SOCIAL ICONS */
+.social-icon {
+    width: 42px;
+    height: 42px;
+    background-color: #1a2332;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #9ca3af;
+    transition: 0.2s;
+}
+
+.social-icon:hover {
+    background-color: #2563eb;
+    color: #fff;
+}
+
+/* TITLES */
+.footer-title {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+/* LINK LIST */
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+    color: #9ca3af;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.footer-links a:hover {
+    color: #2563eb;
+}
+
+.footer-divider {
+    border-color: #1f2937;
+}
+
+.footer-copy {
+    color: #6b7280;
+}
+
+.footer-bottom-links a {
+    color: #9ca3af;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.footer-bottom-links a:hover {
+    color: #2563eb;
+}
+
+.how-it-works .step-card {
+    border-radius: 18px;
+    background-color: #ffffff;
+}
+
+.how-it-works .step-badge {
+    position: absolute;
+    top: -14px;
+    left: 24px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #2563eb; /* синій */
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.how-it-works .icon-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    margin: 0 auto;
+    background-color: #e0ecff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2563eb;
+}
+
+.how-it-works .step-card:hover {
+    transform: translateY(-3px);
+    transition: all 0.2s ease-in-out;
+}
+
+.browse-categories {
+    background-color: #f5f7fb;
+}
+
+/* Карточка категорії */
+.category-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 25px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+/* Іконка в кружечку */
+.category-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background-color: #e4efff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #2563eb;
+    margin-bottom: 16px;
+    font-size: 1.3rem;
+}
+
+/* Текст */
+.category-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.category-meta {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 0;
+}
+
+/* Ховер-ефект */
+.category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.12);
+    border-color: #2563eb;
+}

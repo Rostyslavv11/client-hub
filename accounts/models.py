@@ -30,9 +30,35 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 
+class Category(models.Model):
+    code = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+
 class CustomUser(AbstractUser):
+
+    ROLE_CHOICES = {
+        "freelancer": "Freelancer",
+        "client": "Client"
+    }
+
     username = None
     email = models.EmailField(unique=True)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    role = models.CharField(
+        max_length=20,
+        choices=ROLE_CHOICES,
+        default="client"
+    )
+    category = models.ManyToManyField(
+        Category,
+        blank=True,
+        related_name="custom_users"
+    )
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
