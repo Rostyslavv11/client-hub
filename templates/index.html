@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="row align-items-center">
+
+          <div class="col-lg-6 mb-4 mb-lg-0">
+            <h1 class="hero-title mb-3">
+               Find the perfect freelancer<br>for your next project.
+            </h1>
+
+            <p class="hero-subtitle mb-4">
+              Work with verified professionals, fast and securely.
+            </p>
+
+            <div class="hero-buttons d-flex flex-wrap gap-3">
+              <a href="#" class="btn btn-primary btn-lg">
+                Get Started
+              </a>
+              <a href="#" class="btn btn-primary btn-lg">
+                Explore Project
+              </a>
+            </div>
+
+          </div>
+
+          <div class="col-lg-6 text-center">
+            <img
+              src="{% static 'images/freelance_hero.png' %}"
+              alt="ClientHub dashboard preview"
+              class="img-fluid hero-image"
+            >
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="why-choose py-5">
+      <div class="container text-center">
+
+        <h2 class="section-title mb-2">Why choose ClientHub?</h2>
+        <p class="section-subtitle mb-5">
+          Everything you need to succeed in the freelance economy
+        </p>
+
+        <div class="row g-4">
+
+          <!-- CARD 1 -->
+          <div class="col-md-4">
+            <div class="feature-card">
+              <div class="icon-box">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <h5 class="feature-title">Secure Payments</h5>
+              <p class="feature-text">
+                Your payments are protected with industry-leading security and escrow services.
+              </p>
+            </div>
+          </div>
+
+          <!-- CARD 2 -->
+          <div class="col-md-4">
+            <div class="feature-card">
+              <div class="icon-box">
+                <i class="bi bi-clock-history"></i>
+              </div>
+              <h5 class="feature-title">Fast Delivery</h5>
+              <p class="feature-text">
+                Get your projects completed on time with our reliable freelancers.
+              </p>
+            </div>
+          </div>
+
+          <!-- CARD 3 -->
+          <div class="col-md-4">
+            <div class="feature-card">
+              <div class="icon-box">
+                <i class="bi bi-cash-stack"></i>
+              </div>
+              <h5 class="feature-title">Best Value</h5>
+              <p class="feature-text">
+                Competitive rates and flexible pricing options for every budget.
+              </p>
+            </div>
+          </div>
+
+          <!-- CARD 4 -->
+          <div class="col-md-4">
+            <div class="feature-card">
+              <div class="icon-box">
+                <i class="bi bi-people"></i>
+              </div>
+              <h5 class="feature-title">Vetted Talent</h5>
+              <p class="feature-text">
+                All freelancers are carefully screened and verified for quality.
+              </p>
+            </div>
+          </div>
+
+          <!-- CARD 5 -->
+          <div class="col-md-4">
+            <div class="feature-card">
+              <div class="icon-box">
+                <i class="bi bi-award"></i>
+              </div>
+              <h5 class="feature-title">Quality Guaranteed</h5>
+              <p class="feature-text">
+                Free revisions and money-back guarantee if you're not satisfied.
+              </p>
+            </div>
+          </div>
+
+          <!-- CARD 6 -->
+          <div class="col-md-4">
+            <div class="feature-card">
+              <div class="icon-box">
+                <i class="bi bi-chat-dots"></i>
+              </div>
+              <h5 class="feature-title">24/7 Support</h5>
+              <p class="feature-text">
+                Our support team is always here to help you succeed.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="how-it-works py-5 bg-light">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="fw-bold">How ClientHub works</h2>
+          <p class="text-muted mb-0">
+            Get your freelance project done in a few simple steps.
+          </p>
+        </div>
+
+        <div class="row g-5 justify-content-center">
+          <!-- Step 1 -->
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm position-relative step-card">
+              <div class="step-badge">1</div>
+              <div class="card-body text-center">
+                <div class="icon-circle mb-3">
+                  <i class="bi bi-briefcase fs-3"></i>
+                </div>
+                <h5 class="card-title fw-semibold">Post Your Project</h5>
+                <p class="card-text text-muted">
+                  Describe your idea, set budget and deadline. Your project becomes visible to freelancers on ClientHub.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm position-relative step-card">
+              <div class="step-badge">2</div>
+              <div class="card-body text-center">
+                <div class="icon-circle mb-3">
+                  <i class="bi bi-people fs-3"></i>
+                </div>
+                <h5 class="card-title fw-semibold">Review Proposals</h5>
+                <p class="card-text text-muted">
+                  Compare profiles, portfolios and offers to find the best match for your project.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm position-relative step-card">
+              <div class="step-badge">3</div>
+              <div class="card-body text-center">
+                <div class="icon-circle mb-3">
+                  <i class="bi bi-chat-dots fs-3"></i>
+                </div>
+                <h5 class="card-title fw-semibold">Start Working</h5>
+                <p class="card-text text-muted">
+                  Collaborate via built-in messages, share files and track progress in your dashboard.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="col-12 col-md-6 col-lg-3">
+            <div class="card h-100 border-0 shadow-sm position-relative step-card">
+              <div class="step-badge">4</div>
+              <div class="card-body text-center">
+                <div class="icon-circle mb-3">
+                  <i class="bi bi-shield-check fs-3"></i>
+                </div>
+                <h5 class="card-title fw-semibold">Pay Securely</h5>
+                <p class="card-text text-muted">
+                  Approve the work and keep all payments and invoices safely stored in ClientHub.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="browse-categories py-5 bg-light">
+      <div class="container">
+        <div class="text-center mb-5">
+          <h2 class="fw-bold">Browse by category</h2>
+          <p class="text-muted mb-0">
+            Find the right expertise for your project.
+          </p>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+
+          <!-- Category 1 -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="category-card h-100">
+              <div class="category-icon">
+                <i class="bi bi-code-slash"></i>
+              </div>
+              <h5 class="category-title">Programming &amp; Tech</h5>
+              <p class="category-meta">5,234 freelancers</p>
+            </div>
+          </div>
+
+          <!-- Category 2 -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="category-card h-100">
+              <div class="category-icon">
+                <i class="bi bi-palette"></i>
+              </div>
+              <h5 class="category-title">Design &amp; Creative</h5>
+              <p class="category-meta">4,892 freelancers</p>
+            </div>
+          </div>
+
+          <!-- Category 3 -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="category-card h-100">
+              <div class="category-icon">
+                <i class="bi bi-pen"></i>
+              </div>
+              <h5 class="category-title">Writing &amp; Translation</h5>
+              <p class="category-meta">3,456 freelancers</p>
+            </div>
+          </div>
+
+          <!-- Category 4 -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="category-card h-100">
+              <div class="category-icon">
+                <i class="bi bi-camera"></i>
+              </div>
+              <h5 class="category-title">Photography</h5>
+              <p class="category-meta">2,678 freelancers</p>
+            </div>
+          </div>
+
+          <!-- Category 5 -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="category-card h-100">
+              <div class="category-icon">
+                <i class="bi bi-megaphone"></i>
+              </div>
+              <h5 class="category-title">Marketing &amp; Sales</h5>
+              <p class="category-meta">3,891 freelancers</p>
+            </div>
+          </div>
+
+          <!-- Category 6 (active/selected приклад) -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="category-card h-100 category-card">
+              <div class="category-icon">
+                <i class="bi bi-briefcase"></i>
+              </div>
+              <h5 class="category-title">Business &amp; Admin</h5>
+              <p class="category-meta">2,234 freelancers</p>
+            </div>
+          </div>
+
+          <!-- Category 7 -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="category-card h-100">
+              <div class="category-icon">
+                <i class="bi bi-music-note-beamed"></i>
+              </div>
+              <h5 class="category-title">Music &amp; Audio</h5>
+              <p class="category-meta">1,567 freelancers</p>
+            </div>
+          </div>
+
+          <!-- Category 8 -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="category-card h-100">
+              <div class="category-icon">
+                <i class="bi bi-film"></i>
+              </div>
+              <h5 class="category-title">Video &amp; Animation</h5>
+              <p class="category-meta">2,890 freelancers</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+{% endblock %}
