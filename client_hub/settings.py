@@ -138,6 +138,6 @@ MEDIA_URL = "/media/"
 
 LOGIN_URL = "login"
 
-LOGIN_REDIRECT_URL = "index"
+LOGIN_REDIRECT_URL = "home"
 
-LOGOUT_REDIRECT_URL = "index"
+LOGOUT_REDIRECT_URL = "home"
