@@ -34,8 +34,15 @@
       </ul>
 
       <div class="d-flex">
-        <a class="btn btn-outline-light me-2" href="{% url 'accounts:login' %}">Login</a>
-        <a class="btn btn-primary" href="{% url 'accounts:register' %}">Sign up</a>
+        {% if user.is_authenticated %}
+          <form action="{% url 'accounts:logout' %}" method="post" class="d-inline">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-light">Logout</button>
+          </form>
+        {% else %}
+          <a class="btn btn-outline-light me-2" href="{% url 'accounts:login' %}">Login</a>
+          <a class="btn btn-primary" href="{% url 'accounts:register' %}">Sign up</a>
+        {% endif %}
       </div>
     </div>
   </div>
