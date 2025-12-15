@@ -40,10 +40,10 @@ class Category(models.Model):
 
 class CustomUser(AbstractUser):
 
-    ROLE_CHOICES = {
-        "freelancer": "Freelancer",
-        "client": "Client"
-    }
+    ROLE_CHOICES = (
+        ("freelancer", "Freelancer"),
+        ("client", "Client"),
+    )
 
     username = None
     email = models.EmailField(unique=True)
