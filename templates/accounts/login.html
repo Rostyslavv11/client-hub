@@ -1,24 +1,35 @@
 {% extends "accounts/base_accounts.html" %}
 {% block content %}
   <div class="wrapper">
-   <form action="">
-     <h1>Login</h1>
-     <div class="input-box">
-       {{ form.username }}
-       <i class='bx  bx-mail-open'></i>
-     </div>
-     <div class="input-box">
-       {{ form.password }}
-       <i class='bx  bx-lock-keyhole'></i>
-     </div>
-     <div class="remember">
-       <label for=""><input type="checkbox">Remember me</label>
-       <a href="#">Forgot password?</a>
-     </div>
-     <button type="submit" class="btn">Login</button>
-     <div class="register-link">
-       <p>Don't have an account? <a href="{% url 'accounts:register' %}">Register</a></p>
-     </div>
-   </form>
- </div>
+    <form method="post" action="{% url 'accounts:login' %}">
+      {% csrf_token %}
+      <h1>Login</h1>
+
+      {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {{ form.non_field_errors }}
+        </div>
+      {% endif %}
+
+      <div class="input-box">
+        {{ form.username }}
+        <i class='bx  bx-mail-open'></i>
+        {{ form.username.errors }}
+      </div>
+      <div class="input-box">
+        {{ form.password }}
+        <i class='bx  bx-lock-keyhole'></i>
+        {{ form.password.errors }}
+      </div>
+
+      <div class="remember">
+        <label for=""><input type="checkbox">Remember me</label>
+        <a href="#">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn">Login</button>
+      <div class="register-link">
+        <p>Don't have an account? <a href="{% url 'accounts:register' %}">Register</a></p>
+      </div>
+    </form>
+  </div>
 {% endblock %}
