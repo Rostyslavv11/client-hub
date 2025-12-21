@@ -1,5 +1,13 @@
 from django.conf import settings
 from django.db import models
+from django.db.models.fields import return_None
+
+
+class Tags(models.Model):
+    name = models.CharField(max_length=100, null=False)
+
+    def __str__(self):
+        return self.name
 
 
 class Project(models.Model):
@@ -28,6 +36,7 @@ class Project(models.Model):
         choices=Status.choices,
         default=Status.OPEN
     )
+    tags = models.ManyToManyField(Tags, related_name="projects")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
