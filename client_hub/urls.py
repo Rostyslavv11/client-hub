@@ -25,5 +25,7 @@ from accounts.views import index
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", index, name="home"),
-    path("accounts/", include("accounts.urls", namespace="accounts"))
+    path("accounts/", include("accounts.urls", namespace="accounts")),
+    path("dashboard/", include("dashboard.urls", namespace="dashboard")),
+    path("projects/", include("projects.urls", namespace="projects"))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
