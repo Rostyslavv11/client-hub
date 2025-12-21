@@ -20,16 +20,16 @@
           <a class="nav-link" aria-current="page" href="{% url 'home' %}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Find Work</a>
+          <a class="nav-link" href="{% if user.is_authenticated %}{% url 'projects:find_work' %}{% else %}{% url 'accounts:login' %}?next={% url 'projects:find_work' %}{% endif %}">Find Work</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Find Talent</a>
+          <a class="nav-link" href="{% if user.is_authenticated %}{% url 'dashboard:find_talent' %}{% else %}{% url 'accounts:login' %}?next={% url 'dashboard:find_talent' %}{% endif %}">Find Talent</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Overview</a>
+          <a class="nav-link" href="{% if user.is_authenticated %}{% url 'dashboard:overview' %}{% else %}{% url 'accounts:login' %}?next={% url 'dashboard:overview' %}{% endif %}">Overview</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+          <a class="nav-link" href="{% if user.is_authenticated %}#{% else %}{% url 'accounts:login' %}?next={% url 'home' %}{% endif %}">About</a>
         </li>
       </ul>
 
