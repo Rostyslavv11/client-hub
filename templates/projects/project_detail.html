@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<main class="project-detail py-5">
+  <section class="project-hero mb-5">
+    <div class="container">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-8">
+          <div class="project-hero-card">
+            <div class="project-hero-meta">
+              <span class="project-chip">{{ project.status|default:"Open" }}</span>
+              <span class="project-chip muted">Posted {{ project.created_at|date:"M d, Y"|default:"Dec 12, 2025" }}</span>
+              <span class="project-chip muted">Remote-friendly</span>
+            </div>
+            <h1 class="project-hero-title">{{ project.title|default:"Landing page redesign for SaaS product" }}</h1>
+            <p class="project-hero-subtitle">
+              {{ project.description|default:"Refresh a high-converting landing page with a sharper narrative, stronger visuals, and a faster conversion path for trial signups." }}
+            </p>
+            <div class="project-stats">
+              <div>
+                <span class="project-stat-label">Budget</span>
+                <span class="project-stat-value">${{ project.budget|default:"1,200" }}</span>
+              </div>
+              <div>
+                <span class="project-stat-label">Deadline</span>
+                <span class="project-stat-value">{{ project.deadline|date:"M d, Y"|default:"Dec 30, 2025" }}</span>
+              </div>
+              <div>
+                <span class="project-stat-label">Category</span>
+                <span class="project-stat-value">Product Design</span>
+              </div>
+            </div>
+            <div class="project-tags">
+              {% for tag in project.tags.all %}
+                <span class="project-tag">{{ tag.name }}</span>
+              {% empty %}
+                <span class="project-tag">UI/UX</span>
+                <span class="project-tag">Figma</span>
+                <span class="project-tag">Webflow</span>
+                <span class="project-tag">Branding</span>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="project-cta-card">
+            <div class="project-cta-header">
+              <h5 class="mb-1">Apply for this project</h5>
+              <p class="mb-0 text-muted">Send a quick pitch and portfolio link.</p>
+            </div>
+            <div class="project-cta-list">
+              <div>
+                <span class="project-cta-label">Estimated workload</span>
+                <span class="project-cta-value">2-3 weeks</span>
+              </div>
+              <div>
+                <span class="project-cta-label">Client rating</span>
+                <span class="project-cta-value">4.9 (26 reviews)</span>
+              </div>
+              <div>
+                <span class="project-cta-label">Response time</span>
+                <span class="project-cta-value">Within 12 hours</span>
+              </div>
+            </div>
+            <button class="btn btn-primary w-100 btn-lg">Submit proposal</button>
+            <button class="btn btn-outline-light w-100 mt-2">Save for later</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container">
+    <div class="row g-4">
+      <div class="col-lg-8">
+        <div class="project-panel">
+          <h3 class="project-panel-title">Project overview</h3>
+          <p class="text-muted mb-4">
+            We need a crisp, conversion-focused landing page that aligns product messaging with a new visual identity.
+            The work should include copy refinement, a modular layout system, and a responsive hero section.
+          </p>
+          <div class="project-columns">
+            <div>
+              <h6 class="project-panel-subtitle">What you will do</h6>
+              <ul class="project-list">
+                <li>Audit the current landing page and propose a new narrative flow.</li>
+                <li>Design three hero variants with clear CTAs.</li>
+                <li>Deliver desktop and mobile layouts in Figma.</li>
+              </ul>
+            </div>
+            <div>
+              <h6 class="project-panel-subtitle">Deliverables</h6>
+              <ul class="project-list">
+                <li>Design system tokens for spacing, typography, and color.</li>
+                <li>Final responsive layouts and a component library.</li>
+                <li>Handoff checklist with assets and usage notes.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-panel">
+          <h3 class="project-panel-title">Milestones</h3>
+          <div class="project-timeline">
+            <div class="project-timeline-item">
+              <div class="project-timeline-dot"></div>
+              <div>
+                <p class="project-timeline-title">Discovery and wireframes</p>
+                <p class="project-timeline-meta">3 days · $250</p>
+              </div>
+            </div>
+            <div class="project-timeline-item">
+              <div class="project-timeline-dot"></div>
+              <div>
+                <p class="project-timeline-title">Visual direction</p>
+                <p class="project-timeline-meta">4 days · $450</p>
+              </div>
+            </div>
+            <div class="project-timeline-item">
+              <div class="project-timeline-dot"></div>
+              <div>
+                <p class="project-timeline-title">Final handoff</p>
+                <p class="project-timeline-meta">2 days · $500</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-panel">
+          <h3 class="project-panel-title">Attachments</h3>
+          <div class="project-attachments">
+            <div class="project-attachment">
+              <i class="bi bi-file-earmark-text"></i>
+              <div>
+                <p class="mb-0 fw-semibold">Brand guide.pdf</p>
+                <small class="text-muted">2.1 MB</small>
+              </div>
+            </div>
+            <div class="project-attachment">
+              <i class="bi bi-link-45deg"></i>
+              <div>
+                <p class="mb-0 fw-semibold">Current landing page</p>
+                <small class="text-muted">https://example.com</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="project-panel project-panel-sticky">
+          <h3 class="project-panel-title">About the client</h3>
+          <div class="project-client">
+            <div class="project-client-avatar">CH</div>
+            <div>
+              <p class="mb-0 fw-semibold">ClientHub Labs</p>
+              <small class="text-muted">San Francisco, CA</small>
+            </div>
+          </div>
+          <div class="project-client-stats">
+            <div>
+              <span class="project-cta-label">Jobs posted</span>
+              <span class="project-cta-value">42</span>
+            </div>
+            <div>
+              <span class="project-cta-label">Hire rate</span>
+              <span class="project-cta-value">68%</span>
+            </div>
+            <div>
+              <span class="project-cta-label">Open to agencies</span>
+              <span class="project-cta-value">Yes</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-panel">
+          <h3 class="project-panel-title">Team vibes</h3>
+          <p class="text-muted">Fast feedback loops, async-friendly, weekly checkpoints.</p>
+          <div class="project-pill-grid">
+            <span>Short sprints</span>
+            <span>Clear briefs</span>
+            <span>Design-led</span>
+            <span>Slack updates</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}
