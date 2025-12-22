@@ -69,11 +69,23 @@ class CustomUser(AbstractUser):
         return self.email
 
 
-class Profile(models.Model):
+class ClientProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        related_name="profile"
+        related_name="client_profile"
+    )
+    company_name = models.CharField(max_length=120, blank=True)
+    location = models.CharField(max_length=120, blank=True)
+    is_open_to_agencies = models.BooleanField(default=False)
+    hire_rate = models.PositiveIntegerField(default=0)
+
+
+class FreelancerProfile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="freelancer_profile"
     )
     bio = models.TextField(blank=True)
     portfolio_website = models.URLField(blank=True)

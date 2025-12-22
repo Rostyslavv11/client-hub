@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
-from django.db.models.fields import return_None
+
+from accounts.models import ClientProfile
 
 
 class Tags(models.Model):
@@ -17,18 +18,35 @@ class Project(models.Model):
         IN_PROGRESS = 'in_progress', 'In progress'
         COMPLETED = 'completed', 'Completed'
 
+    class PricingType(models.TextChoices):
+        HOURLY = "hourly", "Hourly"
+        FIXED = "fixed", "Fixed-price"
+
     client = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        ClientProfile,
         on_delete=models.CASCADE,
         related_name="projects"
     )
+
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True, blank=True,
+        related_name="created_projects"
+    )
+
     title = models.CharField(max_length=200)
     description = models.TextField()
-    budget = models.DecimalField(
+    price = models.DecimalField(
         max_digits=8,
         decimal_places=2,
         null=True,
         blank=True
+    )
+    price_type = models.CharField(
+        max_length=20,
+        choices=PricingType.choices,
+        default=PricingType.FIXED
     )
     deadline = models.DateField(null=True, blank=True)
     status = models.CharField(
@@ -38,9 +56,29 @@ class Project(models.Model):
     )
     tags = models.ManyToManyField(Tags, related_name="projects")
     created_at = models.DateTimeField(auto_now_add=True)
+    project_overview = models.TextField(blank=True)
+    responsibilities = models.TextField(
+        blank=True,
+        help_text="What you will do (one item per line or markdown list)"
+    )
+    requirements = models.TextField(
+        blank=True,
+        help_text="Requirements of client (one item per line or markdown list)"
+    )
+
 
     def __str__(self):
         return self.title
+
+
+class Milestone(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="milestones")
+    title = models.CharField(max_length=120)
+    duration_days = models.PositiveIntegerField(null=True, blank=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["order"]
 
 
 class Application(models.Model):

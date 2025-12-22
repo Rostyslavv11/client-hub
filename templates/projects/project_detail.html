@@ -18,8 +18,14 @@
             </p>
             <div class="project-stats">
               <div>
-                <span class="project-stat-label">Budget</span>
-                <span class="project-stat-value">${{ project.budget|default:"1,200" }}</span>
+                <span class="project-stat-label">Price</span>
+                <span class="project-stat-value">
+                  {% if project.price_type == "hourly" %}
+                    ${{ project.price|default:"45" }}/hr
+                  {% else %}
+                    ${{ project.price|default:"1,200" }}
+                  {% endif %}
+                </span>
               </div>
               <div>
                 <span class="project-stat-label">Deadline</span>
@@ -62,7 +68,7 @@
                 <span class="project-cta-value">Within 12 hours</span>
               </div>
             </div>
-            <button class="btn btn-primary w-100 btn-lg">Submit proposal</button>
+            <button class="btn btn-primary w-100 btn-lg">Apply now</button>
             <button class="btn btn-outline-light w-100 mt-2">Save for later</button>
           </div>
         </div>
@@ -89,7 +95,7 @@
               </ul>
             </div>
             <div>
-              <h6 class="project-panel-subtitle">Deliverables</h6>
+              <h6 class="project-panel-subtitle">Our requirements</h6>
               <ul class="project-list">
                 <li>Design system tokens for spacing, typography, and color.</li>
                 <li>Final responsive layouts and a component library.</li>

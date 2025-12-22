@@ -16,66 +16,91 @@
       </div>
     </header>
 
+    <form method="get" id="filtersForm">
     <div class="row g-3 mb-4">
       <div class="col-lg-9">
         <div class="input-group shadow-sm">
-          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-          <input type="text" class="form-control" placeholder="Search projects, keywords, skills">
+          <button class="input-group-text bg-white" type="submit" aria-label="Search"><i class="bi bi-search"></i></button>
+          <input
+      type="text"
+      class="form-control"
+      name="q"
+      placeholder="Search projects, keywords, skills"
+      value="{{ request.GET.q|default:'' }}"
+    >
         </div>
       </div>
       <div class="col-lg-3">
-        <select class="form-select shadow-sm">
-          <option selected>Sort by: Newest</option>
-          <option>Budget: High to Low</option>
-          <option>Budget: Low to High</option>
-          <option>Deadline: Soonest</option>
+        <select class="form-select" name="sorting" id="sortSelect" onchange="this.form.submit()">
+          <option value="" disabled {% if not request.GET.sorting %}selected{% endif %}>
+            Sort results
+          </option>
+
+          <option value="budget_htl" {% if request.GET.sorting == "budget_htl" %}selected{% endif %}>Budget: High to Low</option>
+          <option value="budget_lth" {% if request.GET.sorting == "budget_lth" %}selected{% endif %}>Budget: Low to High</option>
+          <option value="deadline" {% if request.GET.sorting == "deadline" %}selected{% endif %}>Deadline: Soonest</option>
         </select>
       </div>
     </div>
 
-    <div class="collapse mb-4" id="filters">
-      <div class="card shadow-sm border-0">
-        <div class="card-body">
-          <div class="row g-3">
-            <div class="col-md-3">
-              <label class="form-label text-muted">Budget</label>
-              <select class="form-select">
-                <option>Any</option>
-                <option>$0 - $500</option>
-                <option>$500 - $2,000</option>
-                <option>$2,000+</option>
-              </select>
+      <div class="collapse mb-4" id="filters">
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-3">
+                <label class="form-label text-muted">Type</label>
+                <select class="form-select" name="type" id="typeSelect">
+                  <option value="">Any</option>
+                  <option value="fixed">Fixed-price</option>
+                  <option value="hourly">Hourly</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label text-muted">Budget</label>
+                <select class="form-select" name="budget" id="budgetSelect">
+                  <option value="">Any</option>
+                  <option value="0-500">$0 - $500</option>
+                  <option value="501-2000">$501 - $2,000</option>
+                  <option value="2000+">$2,000+</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label text-muted">Tags</label>
+                <div class="border rounded p-2 bg-white" style="max-height: 180px; overflow: auto;">
+                  {% for tag in tags %}
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="tags"
+                        value="{{ tag.id }}"
+                        id="tag-{{ tag.id }}"
+                        {% if tag.id in selected_tags %}checked{% endif %}
+                      >
+                      <label class="form-check-label" for="tag-{{ tag.id }}">{{ tag.name }}</label>
+                    </div>
+                  {% empty %}
+                    <small class="text-muted">No tags available.</small>
+                  {% endfor %}
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label text-muted">Posted</label>
+                <select class="form-select" name="posted">
+                  <option value="">Any time</option>
+                  <option value="24h">Past 24h</option>
+                  <option value="7d">Past week</option>
+                  <option value="30d">Past month</option>
+                </select>
+              </div>
             </div>
-            <div class="col-md-3">
-              <label class="form-label text-muted">Category</label>
-              <select class="form-select">
-                <option>Any</option>
-                {% for tag in tags %}
-                  <option>{{ tag }}</option>
-                {% endfor %}
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label class="form-label text-muted">Type</label>
-              <select class="form-select">
-                <option>Any</option>
-                <option>Fixed-price</option>
-                <option>Hourly</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label class="form-label text-muted">Posted</label>
-              <select class="form-select">
-                <option>Any time</option>
-                <option>Past 24h</option>
-                <option>Past week</option>
-                <option>Past month</option>
-              </select>
+            <div class="d-flex justify-content-end mt-3">
+              <button class="btn btn-primary btn-sm" type="submit">Show results</button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </form>
 
     <section class="row g-4">
       {% for project in object_list %}
@@ -87,7 +112,14 @@
 
               <div class="d-flex align-items-center gap-3 text-muted small mb-3 flex-wrap">
                 <span class="badge bg-light text-dark text-uppercase">{{ project.status }}</span>
-                <span>Budget: {{ project.budget }}</span>
+                <span>
+                  Price:
+                  {% if project.price_type == "hourly" %}
+                    ${{ project.price }}/hr
+                  {% else %}
+                    ${{ project.price }}
+                  {% endif %}
+                </span>
                 <span>Deadline: {{ project.deadline|date:"M d" }}</span>
               </div>
 
@@ -119,4 +151,5 @@
     </section>
   </div>
 </main>
+  <script src="{% static 'js/filter.js' %}"></script>
 {% endblock %}
