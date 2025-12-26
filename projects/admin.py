@@ -14,6 +14,6 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ["project", "freelancer", "status", "created_at"]
+    list_display = ["project", "full_name", "email", "status", "created_at"]
     list_filter = ["status", "created_at"]
-    search_fields = ["cover_letter", "status"]
+    search_fields = ["full_name", "email", "pitch", "status"]

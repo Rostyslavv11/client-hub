@@ -1,8 +1,5 @@
 from django.contrib import admin
-from .models import (
-    CustomUser,
-    Profile
-)
+from .models import CustomUser, ClientProfile, FreelancerProfile
 
 
 @admin.register(CustomUser)
@@ -12,8 +9,15 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ["last_name", "email"]
 
 
-@admin.register(Profile)
-class Profile(admin.ModelAdmin):
+@admin.register(ClientProfile)
+class ClientProfileAdmin(admin.ModelAdmin):
+    list_display = ["user", "company_name", "location", "hire_rate", "is_open_to_agencies"]
+    list_filter = ["is_open_to_agencies", "location"]
+    search_fields = ["company_name", "user__email"]
+
+
+@admin.register(FreelancerProfile)
+class FreelancerProfileAdmin(admin.ModelAdmin):
     list_display = ["user", "portfolio_website", "avatar"]
     list_filter = ["portfolio_website"]
-    search_fields = ["user"]
+    search_fields = ["user__email"]
