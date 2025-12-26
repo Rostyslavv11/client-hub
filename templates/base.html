@@ -15,6 +15,7 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
   <link rel="icon" type="image/x-icon" href="{% static 'images/icons-freelance.ico' %}">
+  {% block extra_css %}{% endblock %}
 </head>
 <body>
   {% include "includes/navbar.html" %}
