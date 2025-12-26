@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard/style_portfolio.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="portfolio-page py-5">
+  <div class="container">
+    <div class="portfolio-header">
+      <div>
+        <h1 class="mb-1">Portfolio</h1>
+        <p class="text-muted mb-0">Share your work via a PDF file or a portfolio link.</p>
+      </div>
+      <span class="portfolio-chip">Freelancer profile</span>
+    </div>
+
+    <div class="portfolio-card">
+      {% if profile and profile.portfolio_file %}
+        <div class="portfolio-file">
+          <div class="portfolio-file-head">
+            <div>
+              <h5 class="mb-1">Portfolio PDF</h5>
+              <p class="text-muted mb-0">Preview below or open in a new tab.</p>
+            </div>
+            <a class="btn btn-outline-secondary" href="{{ profile.portfolio_file.url }}" target="_blank" rel="noopener">
+              Open PDF
+            </a>
+          </div>
+          <div class="portfolio-file-preview">
+            <embed src="{{ profile.portfolio_file.url }}" type="application/pdf">
+          </div>
+        </div>
+      {% elif profile and profile.portfolio_website %}
+        <div class="portfolio-link">
+          <div class="portfolio-link-icon"><i class="bi bi-link-45deg"></i></div>
+          <div>
+            <h5 class="mb-1">Portfolio link</h5>
+            <p class="text-muted mb-2">Your link is ready to share with clients.</p>
+            <a class="btn btn-primary" href="{{ profile.portfolio_website }}" target="_blank" rel="noopener">
+              Visit portfolio
+            </a>
+          </div>
+        </div>
+      {% else %}
+        <div class="portfolio-empty">
+          <div class="portfolio-empty-icon"><i class="bi bi-upload"></i></div>
+          <h4>Add your portfolio here</h4>
+          <p class="text-muted">
+            Upload a PDF or add a link in your profile settings to showcase your work.
+          </p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</main>
+{% endblock %}

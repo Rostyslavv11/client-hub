@@ -1,0 +1,213 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard/style_saved_projects.css' %}">
+{% endblock %}
+{% block content %}
+  <section class="saved-profiles py-5">
+    <div class="container">
+      <div class="saved-hero mb-4">
+        <div class="saved-hero-content">
+          <div class="mb-3">
+            <span class="saved-chip"><i class="bi bi-bookmark-heart"></i> 8 projects</span>
+          </div>
+          <h1 class="saved-hero-title">My projects</h1>
+          <div class="saved-hero-stats">
+            <div class="saved-stat">
+              <div class="saved-stat-label">Project boards</div>
+              <div class="saved-stat-value">2 notebooks</div>
+            </div>
+            <div class="saved-stat">
+              <div class="saved-stat-label">Drafted projects</div>
+              <div class="saved-stat-value">5</div>
+            </div>
+            <div class="saved-stat">
+              <div class="saved-stat-label">Launched projects</div>
+              <div class="saved-stat-value">2</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="saved-toolbar row g-3 align-items-center">
+        <div class="col-lg-5">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-end-0"><i class="bi bi-search"></i></span>
+            <input type="text" class="form-control border-start-0" placeholder="Search by project or keyword">
+          </div>
+        </div>
+        <div class="col-lg-3">
+          <select class="form-select">
+            <option value="" selected disabled>Sort by</option>
+            <option>Budget</option>
+            <option>Timeline</option>
+            <option>Recently updated</option>
+          </select>
+        </div>
+        <div class="col-lg-2">
+          <select class="form-select">
+            <option>Status</option>
+            <option>Idea</option>
+            <option>In review</option>
+            <option>Ready to launch</option>
+          </select>
+        </div>
+        <div class="col-lg-2 d-grid">
+          <button class="btn btn-primary btn-lg"><i class="bi bi-funnel me-2"></i>Filter</button>
+        </div>
+      </div>
+
+      <div class="row g-4 mt-1">
+        <div class="col-lg-8">
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="saved-card">
+                <div class="saved-card-header">
+                  <div class="saved-avatar">NX</div>
+                  <div>
+                    <h5 class="mb-1">NextGen onboarding</h5>
+                    <div class="saved-role">SaaS onboarding refresh - Q1</div>
+                    <div class="saved-rating mt-1"><i class="bi bi-flag-fill"></i> High priority</div>
+                  </div>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                  <span class="saved-badge">Ready to launch</span>
+                  <span class="text-muted">Updated 2 days ago</span>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                  Goal: reduce drop-off on step 2. Deliverables: UX audit, wireframes, and 6 key screens.
+                </p>
+                <div class="saved-tags">
+                  <span class="saved-tag">$18k budget</span>
+                  <span class="saved-tag">6 weeks</span>
+                  <span class="saved-tag">UX + UI</span>
+                </div>
+                <div class="saved-actions">
+                  <button class="btn btn-primary">Open notes</button>
+                  <button class="btn btn-outline-secondary">Start project</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="saved-card">
+                <div class="saved-card-header">
+                  <div class="saved-avatar" style="background:#ecfdf3;color:#16a34a;">MR</div>
+                  <div>
+                    <h5 class="mb-1">Mobile revamp</h5>
+                    <div class="saved-role">iOS + Android refresh - Q2</div>
+                    <div class="saved-rating mt-1"><i class="bi bi-flag-fill"></i> Medium priority</div>
+                  </div>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                  <span class="saved-badge" style="background:rgba(245, 158, 11, 0.16);color:#b45309;">In review</span>
+                  <span class="text-muted">Updated 5 days ago</span>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                  Note: consolidate navigation, speed up checkout, and align with new brand palette.
+                </p>
+                <div class="saved-tags">
+                  <span class="saved-tag">$32k budget</span>
+                  <span class="saved-tag">8 weeks</span>
+                  <span class="saved-tag">Product design</span>
+                </div>
+                <div class="saved-actions">
+                  <button class="btn btn-primary">Open notes</button>
+                  <button class="btn btn-outline-secondary">Start project</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="saved-card">
+                <div class="saved-card-header">
+                  <div class="saved-avatar" style="background:#fef2f2;color:#ef4444;">AT</div>
+                  <div>
+                    <h5 class="mb-1">Brand relaunch kit</h5>
+                    <div class="saved-role">Messaging + visuals - Q1</div>
+                    <div class="saved-rating mt-1"><i class="bi bi-flag-fill"></i> High priority</div>
+                  </div>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                  <span class="saved-badge">Idea</span>
+                  <span class="text-muted">Updated 1 week ago</span>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                  Draft brief: new tone of voice, launch narrative, and a lightweight visual system.
+                </p>
+                <div class="saved-tags">
+                  <span class="saved-tag">$12k budget</span>
+                  <span class="saved-tag">4 weeks</span>
+                  <span class="saved-tag">Brand strategy</span>
+                </div>
+                <div class="saved-actions">
+                  <button class="btn btn-primary">Open notes</button>
+                  <button class="btn btn-outline-secondary">Start project</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="saved-card">
+                <div class="saved-card-header">
+                  <div class="saved-avatar" style="background:#fff7ed;color:#f97316;">JL</div>
+                  <div>
+                    <h5 class="mb-1">Retention dashboard</h5>
+                    <div class="saved-role">Analytics revamp - Q1</div>
+                    <div class="saved-rating mt-1"><i class="bi bi-flag-fill"></i> Low priority</div>
+                  </div>
+                </div>
+                <div class="d-flex flex-wrap gap-2">
+                  <span class="saved-badge" style="background:rgba(37, 99, 235, 0.12);color:#1d4ed8;">In review</span>
+                  <span class="text-muted">Updated 2 weeks ago</span>
+                </div>
+                <p class="mt-3 mb-0 text-muted">
+                  KPI wish list: churn cohorts, reactivation funnel, and live alerts for drops.
+                </p>
+                <div class="saved-tags">
+                  <span class="saved-tag">$9k budget</span>
+                  <span class="saved-tag">3 weeks</span>
+                  <span class="saved-tag">Data + BI</span>
+                </div>
+                <div class="saved-actions">
+                  <button class="btn btn-primary">Open notes</button>
+                  <button class="btn btn-outline-secondary">Start project</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-4">
+          <div class="saved-shortlist mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">Notebooks</h5>
+              <button class="btn btn-sm btn-outline-light">New note</button>
+            </div>
+            <div class="saved-shortlist-item">
+              <div>
+                <div class="fw-semibold">Launch ideas</div>
+                <div class="saved-shortlist-meta">3 projects - Healthtech</div>
+              </div>
+              <span class="saved-shortlist-meta">2 new</span>
+            </div>
+            <div class="saved-shortlist-item">
+              <div>
+                <div class="fw-semibold">SaaS redesign</div>
+                <div class="saved-shortlist-meta">5 projects - UX</div>
+              </div>
+              <span class="saved-shortlist-meta">Updated today</span>
+            </div>
+            <div class="saved-shortlist-item">
+              <div>
+                <div class="fw-semibold">Data sprint</div>
+                <div class="saved-shortlist-meta">4 projects - Analytics</div>
+              </div>
+              <span class="saved-shortlist-meta">Due Fri</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

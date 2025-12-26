@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<main class="py-5 mt-4">
+  <div class="container">
+    <header class="mb-4">
+      <h1 class="fw-bold">Overview</h1>
+      <p class="text-muted">Quick glance at your active projects, messages, and recent activity.</p>
+    </header>
+
+    <section class="row g-3 mb-4">
+      <div class="col-md-3 col-6">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <p class="text-muted mb-1">Active projects</p>
+            <h3 class="fw-bold mb-0" id="stat-active">3</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <p class="text-muted mb-1">Completed</p>
+            <h3 class="fw-bold mb-0" id="stat-completed">12</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <p class="text-muted mb-1">Unread</p>
+            <h3 class="fw-bold mb-0 text-primary" id="stat-unread">4</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-6">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <p class="text-muted mb-1">Balance</p>
+            <h3 class="fw-bold mb-0" id="stat-balance">$1,250</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="row g-4">
+      <div class="col-lg-8">
+        <div class="card shadow-sm border-0 h-100">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0">Recent activity</h5>
+              <a href="#" class="text-decoration-none">View all</a>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex align-items-center">
+                <div class="badge bg-primary me-3">In progress</div>
+                <div>
+                  <div class="fw-semibold">Website redesign</div>
+                  <small class="text-muted">Updated Dec 15, 2025</small>
+                </div>
+              </li>
+              <li class="list-group-item d-flex align-items-center">
+                <div class="badge bg-warning text-dark me-3">Pending</div>
+                <div>
+                  <div class="fw-semibold">Marketing assets</div>
+                  <small class="text-muted">Created Dec 12, 2025</small>
+                </div>
+              </li>
+              <li class="list-group-item d-flex align-items-center">
+                <div class="badge bg-success me-3">Completed</div>
+                <div>
+                  <div class="fw-semibold">iOS app QA</div>
+                  <small class="text-muted">Finished Dec 10, 2025</small>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card shadow-sm border-0 mb-4">
+          <div class="card-body">
+            <h5 class="mb-3">Quick actions</h5>
+            <div class="d-grid gap-2">
+              <a class="btn btn-primary" href="#">Create project</a>
+              <a class="btn btn-outline-primary" href="#">Send a message</a>
+              <a class="btn btn-outline-secondary" href="#">Add portfolio</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card shadow-sm border-0">
+          <div class="card-body">
+            <h5 class="mb-3">Recommendations</h5>
+            <div class="d-flex align-items-start mb-3">
+              <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width:44px;height:44px;">🎨</div>
+              <div>
+                <div class="fw-semibold">UI/UX Designer</div>
+                <small class="text-muted">Top rated · 150+ projects</small>
+              </div>
+            </div>
+            <div class="d-flex align-items-start mb-3">
+              <div class="bg-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width:44px;height:44px;">💻</div>
+              <div>
+                <div class="fw-semibold">Full-stack Developer</div>
+                <small class="text-muted">React · Django · API</small>
+              </div>
+            </div>
+            <a href="#" class="text-decoration-none">Show more</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}
