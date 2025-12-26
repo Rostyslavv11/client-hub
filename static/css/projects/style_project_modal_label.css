@@ -1,0 +1,61 @@
+.apply-modal .modal-content {
+border: 0;
+border-radius: 24px;
+overflow: hidden;
+box-shadow: 0 28px 60px rgba(15, 23, 42, 0.35);
+}
+
+.apply-modal .modal-header {
+background: linear-gradient(120deg, #0f172a 0%, #1d4ed8 60%, #14b8a6 100%);
+color: #f8fafc;
+padding: 1.75rem 2rem 1.25rem;
+}
+
+.apply-modal .modal-header .text-muted {
+color: rgba(226, 232, 240, 0.8) !important;
+}
+
+.apply-modal .btn-close {
+filter: invert(1);
+}
+
+.apply-modal .modal-body {
+background: #f8fafc;
+padding: 1.75rem 2rem 2rem;
+}
+
+.apply-modal .form-control,
+.apply-modal .form-select {
+border-radius: 12px;
+border-color: #e2e8f0;
+}
+
+.apply-modal .form-control:focus,
+.apply-modal .form-select:focus {
+border-color: #2563eb;
+box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+}
+
+.apply-modal .form-control::placeholder,
+.apply-modal textarea::placeholder {
+color: rgba(15, 23, 42, 0.45);
+opacity: 1;
+}
+
+.apply-modal .form-control::-ms-input-placeholder,
+.apply-modal textarea::-ms-input-placeholder {
+color: rgba(15, 23, 42, 0.45);
+}
+
+.apply-modal .apply-pill {
+display: inline-flex;
+align-items: center;
+gap: 0.4rem;
+padding: 0.35rem 0.85rem;
+border-radius: 999px;
+background: rgba(248, 250, 252, 0.2);
+color: #f8fafc;
+border: 1px solid rgba(226, 232, 240, 0.35);
+font-size: 0.85rem;
+margin-bottom: 0.35rem;
+}
