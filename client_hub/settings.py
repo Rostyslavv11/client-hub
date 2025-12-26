@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "accounts",
     "dashboard",
     "messages_app",
-    "projects",
+    "projects.apps.ProjectsConfig",
     "widget_tweaks",
 ]
 
