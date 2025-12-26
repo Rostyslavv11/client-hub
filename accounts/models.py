@@ -89,4 +89,9 @@ class FreelancerProfile(models.Model):
     )
     bio = models.TextField(blank=True)
     portfolio_website = models.URLField(blank=True)
+    portfolio_file = models.FileField(
+        upload_to="freelancer_portfolios/%Y/%m/",
+        blank=True,
+        null=True
+    )
     avatar = models.ImageField(blank=True, upload_to="avatars/")
