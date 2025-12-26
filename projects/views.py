@@ -1,7 +1,13 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from django.db.models import Q
 from django.contrib.auth.mixins import LoginRequiredMixin
-from projects.models import Project, Tags
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, get_object_or_404
+from django.views.decorators.http import require_POST
+
+from projects.forms import ApplicationForm
+from projects.models import Project, Tags, Application, SavedProject
 from django.utils import timezone
 from datetime import timedelta
 
@@ -34,7 +40,7 @@ class ProjectsListView(LoginRequiredMixin, ListView):
             if sorting == "budget_lth":
                 queryset = queryset.order_by("price")
             if sorting == "deadline":
-                queryset = queryset.order_by("-deadline")
+                queryset = queryset.order_by("deadline")
 
         if project_type == "hourly":
             budget = ""
@@ -71,3 +77,54 @@ class ProjectsListView(LoginRequiredMixin, ListView):
 
 class ProjectDetailView(LoginRequiredMixin, DetailView):
     model = Project
+    template_name = "projects/project_detail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = ApplicationForm()
+        context["has_applied"] = Application.objects.filter(
+            project=self.object,
+            freelancer=self.request.user
+        ).exists()
+        context["is_saved"] = SavedProject.objects.filter(
+            user=self.request.user,
+            project=self.object
+        ).exists()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        if Application.objects.filter(project=self.object, freelancer=request.user).exists():
+            messages.info(request, "You’ve already applied for this project")
+            return redirect("projects:project_detail", pk=self.object.pk)
+        form = ApplicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.instance.freelancer = request.user
+            form.instance.project = self.object
+            form.instance.status = Application.Status.IN_REVIEW
+            form.save()
+            messages.success(request, "Application submitted successfully")
+            return redirect("projects:project_detail", pk=self.object.pk)
+        context = self.get_context_data()
+        context["form"] = form
+        return self.render_to_response(context)
+
+
+@login_required
+@require_POST
+def save_project(request, pk):
+    project = get_object_or_404(Project, pk=pk)
+    SavedProject.objects.get_or_create(user=request.user, project=project)
+    messages.success(request, "Project saved")
+    return redirect("projects:project_detail", pk=pk)
+
+
+class ApplicationCreateView(LoginRequiredMixin, CreateView):
+    model = Application
+    form_class = ApplicationForm
+    template_name = "projects/project_detail.html"
+
+    def form_valid(self, form):
+        form.instance.freelancer = self.request.user
+        form.instance.project_id = self.kwargs["project_id"]
+        return super().form_valid(form)

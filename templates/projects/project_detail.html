@@ -1,5 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/projects/style_project_modal_label.css' %}">
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/projects/project_modal_label.js' %}"></script>
+{% endblock %}
 {% block content %}
 <main class="project-detail py-5">
   <section class="project-hero mb-5">
@@ -33,17 +40,16 @@
               </div>
               <div>
                 <span class="project-stat-label">Category</span>
-                <span class="project-stat-value">Product Design</span>
+                {% for category in project.client.user.category.all %}
+                <span class="project-stat-value">{{ category.name }}</span>
+                {% endfor %}
               </div>
             </div>
             <div class="project-tags">
               {% for tag in project.tags.all %}
                 <span class="project-tag">{{ tag.name }}</span>
               {% empty %}
-                <span class="project-tag">UI/UX</span>
-                <span class="project-tag">Figma</span>
-                <span class="project-tag">Webflow</span>
-                <span class="project-tag">Branding</span>
+                <span class="project-tag">No tags</span>
               {% endfor %}
             </div>
           </div>
@@ -68,8 +74,28 @@
                 <span class="project-cta-value">Within 12 hours</span>
               </div>
             </div>
-            <button class="btn btn-primary w-100 btn-lg">Apply now</button>
-            <button class="btn btn-outline-light w-100 mt-2">Save for later</button>
+            {% if messages %}
+            <div class="mt-3">
+              {% for message in messages %}
+              <div class="alert alert-{{ message.tags|default:'info' }} py-2 mb-2" role="alert">
+                {{ message }}
+              </div>
+              {% endfor %}
+            </div>
+            {% endif %}
+            <button
+              class="btn {% if has_applied %}btn-secondary{% else %}btn-primary{% endif %} w-100 btn-lg"
+              {% if not has_applied %}data-bs-toggle="modal" data-bs-target="#applyModal"{% endif %}
+              {% if has_applied %}disabled aria-disabled="true"{% endif %}
+            >
+              {% if has_applied %}Applied{% else %}Apply now{% endif %}
+            </button>
+            <form method="post" action="{% url 'projects:project_save' project.pk %}" class="mt-2">
+              {% csrf_token %}
+              <button class="btn btn-outline-light w-100" type="submit" {% if is_saved %}disabled{% endif %}>
+                {% if is_saved %}Saved{% else %}Save for later{% endif %}
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -81,26 +107,31 @@
       <div class="col-lg-8">
         <div class="project-panel">
           <h3 class="project-panel-title">Project overview</h3>
-          <p class="text-muted mb-4">
-            We need a crisp, conversion-focused landing page that aligns product messaging with a new visual identity.
-            The work should include copy refinement, a modular layout system, and a responsive hero section.
-          </p>
+          <p class="text-muted mb-4">{{ object.project_overview }}</p>
           <div class="project-columns">
             <div>
               <h6 class="project-panel-subtitle">What you will do</h6>
+              {% if project.responsibilities %}
               <ul class="project-list">
-                <li>Audit the current landing page and propose a new narrative flow.</li>
-                <li>Design three hero variants with clear CTAs.</li>
-                <li>Deliver desktop and mobile layouts in Figma.</li>
+                {% for line in project.responsibilities.splitlines %}
+                  {% if line %}
+                    <li>{{ line }}</li>
+                  {% endif %}
+                {% endfor %}
               </ul>
+              {% endif %}
             </div>
             <div>
               <h6 class="project-panel-subtitle">Our requirements</h6>
+              {% if project.requirements %}
               <ul class="project-list">
-                <li>Design system tokens for spacing, typography, and color.</li>
-                <li>Final responsive layouts and a component library.</li>
-                <li>Handoff checklist with assets and usage notes.</li>
+                {% for line in project.requirements.splitlines %}
+                  {% if line %}
+                    <li>{{ line }}</li>
+                  {% endif %}
+                {% endfor %}
               </ul>
+              {% endif %}
             </div>
           </div>
         </div>
@@ -108,27 +139,15 @@
         <div class="project-panel">
           <h3 class="project-panel-title">Milestones</h3>
           <div class="project-timeline">
+            {% for milestone in project.milestones.all %}
             <div class="project-timeline-item">
               <div class="project-timeline-dot"></div>
               <div>
-                <p class="project-timeline-title">Discovery and wireframes</p>
-                <p class="project-timeline-meta">3 days · $250</p>
+                <p class="project-timeline-title">{{ milestone.title }}</p>
+                <p class="project-timeline-meta">{{ milestone.duration_days }} days</p>
               </div>
             </div>
-            <div class="project-timeline-item">
-              <div class="project-timeline-dot"></div>
-              <div>
-                <p class="project-timeline-title">Visual direction</p>
-                <p class="project-timeline-meta">4 days · $450</p>
-              </div>
-            </div>
-            <div class="project-timeline-item">
-              <div class="project-timeline-dot"></div>
-              <div>
-                <p class="project-timeline-title">Final handoff</p>
-                <p class="project-timeline-meta">2 days · $500</p>
-              </div>
-            </div>
+            {% endfor %}
           </div>
         </div>
 
@@ -157,40 +176,127 @@
         <div class="project-panel project-panel-sticky">
           <h3 class="project-panel-title">About the client</h3>
           <div class="project-client">
-            <div class="project-client-avatar">CH</div>
+            <div class="project-client-avatar">{{ project.client.company_name|slice:":2"|upper }}</div>
             <div>
-              <p class="mb-0 fw-semibold">ClientHub Labs</p>
-              <small class="text-muted">San Francisco, CA</small>
+              <p class="mb-0 fw-semibold">{{ project.client.company_name }}</p>
+              <small class="text-muted">{{ project.client.location }}</small>
             </div>
           </div>
           <div class="project-client-stats">
             <div>
               <span class="project-cta-label">Jobs posted</span>
-              <span class="project-cta-value">42</span>
+              <span class="project-cta-value">{{ project.client.projects.count }}</span>
             </div>
             <div>
               <span class="project-cta-label">Hire rate</span>
-              <span class="project-cta-value">68%</span>
+              <span class="project-cta-value">{{ project.client.hire_rate }}%</span>
             </div>
             <div>
               <span class="project-cta-label">Open to agencies</span>
-              <span class="project-cta-value">Yes</span>
+              <span class="project-cta-value">
+                {% if project.client.is_open_to_agencies %}
+                  Yes
+                  {% else %}
+                  No
+                {% endif %}
+              </span>
             </div>
           </div>
         </div>
 
         <div class="project-panel">
           <h3 class="project-panel-title">Team vibes</h3>
-          <p class="text-muted">Fast feedback loops, async-friendly, weekly checkpoints.</p>
+          <p class="text-muted">{{ project.vibe_description }}</p>
           <div class="project-pill-grid">
-            <span>Short sprints</span>
-            <span>Clear briefs</span>
-            <span>Design-led</span>
-            <span>Slack updates</span>
+            {% for vibe in project.vibe_tags.all %}
+              <span>{{ vibe }}</span>
+            {% endfor %}
           </div>
         </div>
       </div>
     </div>
   </section>
 </main>
+<div class="modal fade apply-modal" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header border-0 pb-0">
+        <div>
+          <h4 class="modal-title" id="applyModalLabel">Apply for this project</h4>
+          <p class="text-muted mb-2">Share a quick pitch and the links that matter most.</p>
+          <span class="apply-pill"><i class="bi bi-clock"></i> 3 minutes to apply</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% if has_applied %}
+            <div class="alert alert-info py-2" role="alert">
+              You have already applied to this project.
+            </div>
+          {% endif %}
+          <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Full name</label>
+                {{ form.full_name }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Email</label>
+                {{ form.email }}
+              </div>
+              <div class="col-12">
+                <label class="form-label">Short pitch</label>
+                {{ form.pitch }}
+              </div>
+            <div class="col-md-6">
+              <label class="form-label">Portfolio format</label>
+                <div class="d-flex flex-wrap gap-3 pt-1">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="portfolio_format" id="portfolioLink" value="link" checked>
+                    <label class="form-check-label" for="portfolioLink">Link</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="portfolio_format" id="portfolioFile" value="file">
+                    <label class="form-check-label" for="portfolioFile">File</label>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div id="portfolioLinkBlock">
+                  <label class="form-label">Portfolio link</label>
+                  {{ form.portfolio_url }}
+                </div>
+                <div id="portfolioFileBlock" class="d-none">
+                  <label class="form-label">Portfolio file</label>
+                  {{ form.portfolio_file }}
+                  <small class="text-muted d-block mt-2">PDF or zip, up to 20 MB.</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Availability</label>
+                {{ form.availability }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Estimated timeline</label>
+                {{ form.estimated_timeline }}
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Proposed budget</label>
+                {{ form.proposed_budget }}
+              </div>
+              <div class="col-12">
+                <label class="form-label">Additional notes</label>
+                {{ form.additional_notes }}
+              </div>
+          </div>
+          <div class="d-flex justify-content-end gap-2 mt-4">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" {% if has_applied %}disabled{% endif %}>Send application</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
