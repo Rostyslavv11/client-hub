@@ -28,6 +28,10 @@ class Project(models.Model):
         IN_PROGRESS = 'in_progress', 'In progress'
         COMPLETED = 'completed', 'Completed'
 
+    class PublishingStatus(models.TextChoices):
+        DRAFTED = "drafted", "Drafted"
+        LAUNCHED = "launched", "Launched"
+
     class PricingType(models.TextChoices):
         HOURLY = "hourly", "Hourly"
         FIXED = "fixed", "Fixed-price"
@@ -64,21 +68,24 @@ class Project(models.Model):
         choices=PricingType.choices,
         default=PricingType.FIXED
     )
-    deadline = models.DateField(null=True, blank=True)
+    deadline = models.DateField()
     status = models.CharField(
         max_length=20,
         choices=Status.choices,
         default=Status.OPEN
     )
+    status_of_publishing = models.CharField(
+        max_length=20,
+        choices=PublishingStatus.choices,
+        default=PublishingStatus.DRAFTED
+    )
     tags = models.ManyToManyField(Tags, related_name="projects")
     created_at = models.DateTimeField(auto_now_add=True)
-    project_overview = models.TextField(blank=True)
+    project_overview = models.TextField()
     responsibilities = models.TextField(
-        blank=True,
         help_text="What you will do (one item per line or markdown list)"
     )
     requirements = models.TextField(
-        blank=True,
         help_text="Requirements of client (one item per line or markdown list)"
     )
 

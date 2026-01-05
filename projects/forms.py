@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Application
+from .models import Application, Project
 
 
 class ApplicationForm(forms.ModelForm):
@@ -70,3 +70,30 @@ class ApplicationForm(forms.ModelForm):
             cleaned["portfolio_url"] = None
 
         return cleaned
+
+
+class ProjectForm(forms.ModelForm):
+    class Meta:
+        model = Project
+        fields = [
+            "title",
+            "description",
+            "project_overview",
+            "responsibilities",
+            "requirements",
+            "price",
+            "price_type",
+            "deadline",
+            "tags",
+        ]
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"class": "form-control", "rows": "4"}),
+            "project_overview": forms.Textarea(attrs={"class": "form-control", "rows": "3"}),
+            "responsibilities": forms.Textarea(attrs={"class": "form-control", "rows": "3"}),
+            "requirements": forms.Textarea(attrs={"class": "form-control", "rows": "3"}),
+            "price": forms.NumberInput(attrs={"class": "form-control"}),
+            "price_type": forms.Select(attrs={"class": "form-select"}),
+            "deadline": forms.DateInput(attrs={"class": "form-control", "type": "date"}),
+            "tags": forms.SelectMultiple(attrs={"class": "form-select", "size": "4"}),
+        }

@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 
 
@@ -38,6 +39,12 @@ class Category(models.Model):
         return self.name
 
 
+class Skill(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
 class CustomUser(AbstractUser):
 
     ROLE_CHOICES = (
@@ -59,6 +66,9 @@ class CustomUser(AbstractUser):
         blank=True,
         related_name="custom_users"
     )
+    phone_number = models.CharField(max_length=30, blank=True)
+    email_verified = models.BooleanField(default=False)
+    phone_verified = models.BooleanField(default=False)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -87,11 +97,20 @@ class FreelancerProfile(models.Model):
         on_delete=models.CASCADE,
         related_name="freelancer_profile"
     )
+    title = models.CharField(max_length=255)
+    hourly_rate = models.DecimalField(max_digits=6, decimal_places=2)
     bio = models.TextField(blank=True)
     portfolio_website = models.URLField(blank=True)
+    location = models.CharField(max_length=255, default="Not provided")
+    weekly_capacity = models.PositiveSmallIntegerField(
+        default=40,
+        validators=[MinValueValidator(20), MaxValueValidator(70)]
+    )
     portfolio_file = models.FileField(
         upload_to="freelancer_portfolios/%Y/%m/",
         blank=True,
         null=True
     )
+    skills = models.ManyToManyField(Skill, blank=True, related_name="freelancers")
     avatar = models.ImageField(blank=True, upload_to="avatars/")
+    joined_at = models.DateTimeField(auto_now_add=True)
