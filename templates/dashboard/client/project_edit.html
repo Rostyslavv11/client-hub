@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/dashboard/style_saved_projects.css' %}">
+  <link rel="stylesheet" href="{% static 'css/dashboard/style_project_edit.css' %}">
+{% endblock %}
+{% block content %}
+  <section class="saved-profiles py-5">
+    <div class="container">
+      <div class="saved-hero mb-4 project-edit-hero">
+        <div class="saved-hero-content">
+          <a class="project-edit-back" href="{% url 'dashboard:client_projects' %}">
+            <i class="bi bi-arrow-left"></i> Back to projects
+          </a>
+          <h1 class="saved-hero-title project-edit-title">Edit project</h1>
+          <p class="project-edit-subtitle">
+            Refine scope, budget, and delivery details before launching.
+          </p>
+        </div>
+      </div>
+      <div class="row justify-content-center project-edit-shell">
+        <div class="col-lg-9">
+          <div class="project-edit-card">
+            <form method="post" novalidate>
+              {% csrf_token %}
+              {{ form.non_field_errors }}
+              <div class="project-edit-section">
+                <div class="project-edit-section-title">Basics</div>
+                <div class="project-edit-section-hint">Give freelancers a clear, concise overview.</div>
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label class="form-label">Title</label>
+                    {{ form.title }}
+                    {{ form.title.errors }}
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Description</label>
+                    {{ form.description }}
+                    {{ form.description.errors }}
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Project overview</label>
+                    {{ form.project_overview }}
+                    <div class="project-edit-field-note">Short summary that appears in cards.</div>
+                    {{ form.project_overview.errors }}
+                  </div>
+                </div>
+              </div>
+              <div class="project-edit-section">
+                <div class="project-edit-section-title">Scope</div>
+                <div class="project-edit-section-hint">Define the outcomes and expectations.</div>
+                <div class="row g-3">
+                  <div class="col-12">
+                    <label class="form-label">Responsibilities</label>
+                    {{ form.responsibilities }}
+                    {{ form.responsibilities.errors }}
+                  </div>
+                  <div class="col-12">
+                    <label class="form-label">Requirements</label>
+                    {{ form.requirements }}
+                    {{ form.requirements.errors }}
+                  </div>
+                </div>
+              </div>
+              <div class="project-edit-section">
+                <div class="project-edit-section-title">Budget and timing</div>
+                <div class="project-edit-section-hint">Set expectations for pricing and delivery.</div>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Price</label>
+                    {{ form.price }}
+                    {{ form.price.errors }}
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Price type</label>
+                    {{ form.price_type }}
+                    {{ form.price_type.errors }}
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Deadline</label>
+                    {{ form.deadline }}
+                    {{ form.deadline.errors }}
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Tags</label>
+                    {{ form.tags }}
+                    {{ form.tags.errors }}
+                  </div>
+                </div>
+              </div>
+              <div class="project-edit-actions">
+                <a class="btn btn-outline-secondary" href="{% url 'dashboard:client_projects' %}">Cancel</a>
+                <button class="btn btn-primary" type="submit">Save changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

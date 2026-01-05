@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/dashboard/style_finance.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main class="finance-page finance-payments">
+    <section class="finance-hero">
+      <div class="container">
+        <div class="finance-hero-content">
+          <div>
+            <span class="finance-chip">Client payments</span>
+            <h1>Payments center</h1>
+            <p>Manage invoices, escrow releases, and upcoming charges in one place.</p>
+          </div>
+          <div class="finance-hero-actions">
+            <button class="btn btn-outline-light btn-sm" type="button">Add payment method</button>
+            <button class="btn btn-light btn-sm" type="button">Pay next invoice</button>
+          </div>
+        </div>
+
+        <div class="finance-metrics">
+          <div class="finance-metric">
+            <div class="finance-metric-label">Total spend</div>
+            <div class="finance-metric-value">$24,780</div>
+            <div class="finance-metric-trend up">+8% vs last quarter</div>
+          </div>
+          <div class="finance-metric">
+            <div class="finance-metric-label">Open invoices</div>
+            <div class="finance-metric-value">$3,950</div>
+            <div class="finance-metric-trend">Due within 14 days</div>
+          </div>
+          <div class="finance-metric">
+            <div class="finance-metric-label">Escrow balance</div>
+            <div class="finance-metric-value">$5,300</div>
+            <div class="finance-metric-trend up">Protected funds</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container finance-grid">
+      <div class="finance-card finance-chart">
+        <div class="finance-card-head">
+          <div>
+            <h2>Spending trend</h2>
+            <p>Monthly spend across active projects.</p>
+          </div>
+          <div class="finance-card-actions">
+            <button class="btn btn-outline-secondary btn-sm" type="button">6M</button>
+            <button class="btn btn-outline-secondary btn-sm" type="button">12M</button>
+          </div>
+        </div>
+        <div class="finance-chart-bars">
+          <div class="finance-bar" style="--bar: 55%;">
+            <span>Oct</span>
+          </div>
+          <div class="finance-bar" style="--bar: 72%;">
+            <span>Nov</span>
+          </div>
+          <div class="finance-bar" style="--bar: 48%;">
+            <span>Dec</span>
+          </div>
+          <div class="finance-bar" style="--bar: 86%;">
+            <span>Jan</span>
+          </div>
+          <div class="finance-bar" style="--bar: 64%;">
+            <span>Feb</span>
+          </div>
+          <div class="finance-bar" style="--bar: 78%;">
+            <span>Mar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="finance-card">
+        <div class="finance-card-head">
+          <div>
+            <h2>Upcoming payments</h2>
+            <p>Invoices waiting for approval.</p>
+          </div>
+        </div>
+        <div class="finance-list">
+          <div class="finance-list-item">
+            <div>
+              <div class="finance-list-title">Pulse Mobile UI</div>
+              <div class="finance-list-meta">Milestone 2 • Apr 06</div>
+            </div>
+            <div class="finance-list-value">$920</div>
+          </div>
+          <div class="finance-list-item">
+            <div>
+              <div class="finance-list-title">Nova ecommerce</div>
+              <div class="finance-list-meta">Invoice #3441 • Apr 11</div>
+            </div>
+            <div class="finance-list-value">$1,480</div>
+          </div>
+          <div class="finance-list-item">
+            <div>
+              <div class="finance-list-title">Orbit dashboard</div>
+              <div class="finance-list-meta">Retainer • Apr 18</div>
+            </div>
+            <div class="finance-list-value">$650</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="finance-card finance-table">
+        <div class="finance-card-head">
+          <div>
+            <h2>Payment history</h2>
+            <p>Every invoice and release recorded.</p>
+          </div>
+          <button class="btn btn-outline-secondary btn-sm" type="button">Export CSV</button>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-borderless align-middle mb-0">
+            <thead>
+              <tr>
+                <th>Vendor</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th class="text-end">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Pulse Mobile UI</td>
+                <td><span class="finance-tag success">Paid</span></td>
+                <td>Mar 29, 2026</td>
+                <td class="text-end">$1,240</td>
+              </tr>
+              <tr>
+                <td>Nova ecommerce</td>
+                <td><span class="finance-tag warning">Scheduled</span></td>
+                <td>Mar 25, 2026</td>
+                <td class="text-end">$820</td>
+              </tr>
+              <tr>
+                <td>Orbit dashboard</td>
+                <td><span class="finance-tag neutral">Escrow</span></td>
+                <td>Mar 20, 2026</td>
+                <td class="text-end">$3,600</td>
+              </tr>
+              <tr>
+                <td>Northwind SaaS</td>
+                <td><span class="finance-tag success">Paid</span></td>
+                <td>Mar 12, 2026</td>
+                <td class="text-end">$2,100</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock %}

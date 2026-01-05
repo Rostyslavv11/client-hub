@@ -23,12 +23,12 @@
               <h5 class="mb-1">Portfolio PDF</h5>
               <p class="text-muted mb-0">Preview below or open in a new tab.</p>
             </div>
-            <a class="btn btn-outline-secondary" href="{{ profile.portfolio_file.url }}" target="_blank" rel="noopener">
+            <a class="btn btn-outline-secondary" href="{{ portfolio_src }}" target="_blank" rel="noopener">
               Open PDF
             </a>
           </div>
           <div class="portfolio-file-preview">
-            <embed src="{{ profile.portfolio_file.url }}" type="application/pdf">
+            <embed src="{{ portfolio_src }}" type="application/pdf" class="w-100" style="height: 650px;">
           </div>
         </div>
       {% elif profile and profile.portfolio_website %}

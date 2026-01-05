@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<main class="py-5 mt-4">
+  <div class="container">
+    <header class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
+      <div>
+        <span class="text-uppercase text-primary fw-semibold small">Talent pool</span>
+        <h1 class="fw-bold mb-2">Find the right freelancer</h1>
+        <p class="text-muted mb-0">Filter by category, rate, and keywords to find the best match fast.</p>
+      </div>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#talentFilters" aria-expanded="false" aria-controls="talentFilters">
+          Filters
+        </button>
+        <a class="btn btn-outline-secondary" href="{% url 'dashboard:find_talent' %}">Clear</a>
+      </div>
+    </header>
+
+    <form class="row g-3 mb-4 align-items-end" method="get">
+      <div class="col-lg-7">
+        <label class="form-label text-muted small">Search</label>
+        <div class="input-group shadow-sm">
+          <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+          <input type="text" class="form-control" name="q" value="{{ query }}" placeholder="Name, title, or keyword">
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <label class="form-label text-muted small">Sort</label>
+        <select class="form-select shadow-sm" name="sort">
+          <option value="" {% if not selected_sort %}selected{% endif %}>Newest profiles</option>
+          <option value="rate_asc" {% if selected_sort == "rate_asc" %}selected{% endif %}>Rate: Low to High</option>
+          <option value="rate_desc" {% if selected_sort == "rate_desc" %}selected{% endif %}>Rate: High to Low</option>
+          <option value="oldest" {% if selected_sort == "oldest" %}selected{% endif %}>Oldest profiles</option>
+          <option value="name" {% if selected_sort == "name" %}selected{% endif %}>Name A-Z</option>
+        </select>
+      </div>
+      <div class="col-lg-2 d-grid">
+        <button class="btn btn-primary" type="submit">Search</button>
+      </div>
+      <div class="col-12">
+        <div class="text-muted small">Results: {{ results_count }}</div>
+      </div>
+
+      <div class="collapse" id="talentFilters">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-6 col-lg-4">
+                <label class="form-label text-muted">Category</label>
+                <select class="form-select" name="category">
+                  <option value="" {% if not selected_category %}selected{% endif %}>Any</option>
+                  {% for category in categories %}
+                    <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>{{ category.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-6 col-lg-4">
+                <label class="form-label text-muted">Hourly rate</label>
+                <select class="form-select" name="rate">
+                  <option value="" {% if not selected_rate %}selected{% endif %}>Any</option>
+                  <option value="0-25" {% if selected_rate == "0-25" %}selected{% endif %}>$0 - $25/hr</option>
+                  <option value="25-50" {% if selected_rate == "25-50" %}selected{% endif %}>$25 - $50/hr</option>
+                  <option value="50-100" {% if selected_rate == "50-100" %}selected{% endif %}>$50 - $100/hr</option>
+                  <option value="100+" {% if selected_rate == "100+" %}selected{% endif %}>$100+/hr</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <section class="row g-3">
+      {% for freelancer in freelancers %}
+        <div class="col-12">
+          <div class="card border-0 shadow-sm h-100 position-relative">
+            <div class="card-body">
+              <div class="d-flex align-items-start gap-3 flex-wrap">
+                <div class="flex-shrink-0">
+                  {% if freelancer.avatar %}
+                    <img src="{{ freelancer.avatar.url }}" class="rounded-circle border" width="64" height="64" alt="{{ freelancer.user.first_name }} {{ freelancer.user.last_name }}">
+                  {% else %}
+                    <div class="rounded-circle bg-primary-subtle text-primary d-flex align-items-center justify-content-center fw-semibold" style="width: 64px; height: 64px;">
+                      {{ freelancer.user.first_name|default:freelancer.user.email|slice:":1" }}{{ freelancer.user.last_name|slice:":1" }}
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between flex-wrap gap-2">
+                    <div>
+                      <h5 class="mb-1">{{ freelancer.user.first_name }} {{ freelancer.user.last_name }}</h5>
+                      <p class="mb-1 text-muted">{{ freelancer.title }}</p>
+                    </div>
+                    <div class="text-end">
+                      <div class="fw-semibold">${{ freelancer.hourly_rate }}/hr</div>
+                      <div class="small text-muted">Joined {{ freelancer.joined_at|date:"M Y" }}</div>
+                    </div>
+                  </div>
+                  <p class="text-muted small mb-2">{{ freelancer.bio|default:"No bio yet."|truncatechars:140 }}</p>
+                  <div class="d-flex flex-wrap gap-2">
+                    {% for category in freelancer.user.category.all %}
+                      <span class="badge bg-secondary-subtle text-secondary">{{ category.name }}</span>
+                    {% empty %}
+                      <span class="badge bg-light text-muted">Generalist</span>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <a class="stretched-link" href="{% url 'dashboard:freelancer_detail' freelancer.id %}" aria-label="View profile for {{ freelancer.user.first_name }} {{ freelancer.user.last_name }}"></a>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12">
+          <div class="alert alert-secondary mb-0">No talent found.</div>
+        </div>
+      {% endfor %}
+    </section>
+  </div>
+</main>
+{% endblock %}
