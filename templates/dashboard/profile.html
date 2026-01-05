@@ -1,0 +1,406 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/dashboard/style_profile.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main class="profile-page">
+    <section class="profile-hero">
+      <div class="container">
+        <div class="profile-hero-card">
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="d-flex align-items-center gap-3">
+              {% if user.role == "freelancer" and profile_obj and profile_obj.avatar %}
+                <img src="{{ profile_obj.avatar.url }}" class="profile-avatar" alt="{{ user.first_name }} {{ user.last_name }}">
+              {% else %}
+                <div class="profile-avatar">
+                  {{ user.first_name|default:user.email|slice:":1" }}{{ user.last_name|slice:":1" }}
+                </div>
+              {% endif %}
+              <div>
+                <h1 class="profile-title mb-1">{{ user.first_name }} {{ user.last_name }}</h1>
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                  <span class="profile-chip"><i class="bi bi-person"></i> {{ user.get_role_display|default:"Member" }}</span>
+                  <span class="profile-chip"><i class="bi bi-envelope"></i> {{ user.email }}</span>
+                </div>
+              </div>
+            </div>
+            <div class="text-end">
+              <div class="profile-subtitle">Account status</div>
+              <div class="d-flex flex-wrap gap-2 justify-content-end mt-2">
+                <span class="status-badge {% if user.email_verified %}verified{% else %}pending{% endif %}">
+                  <i class="bi {% if user.email_verified %}bi-check-circle{% else %}bi-exclamation-circle{% endif %}"></i>
+                  Email {% if user.email_verified %}verified{% else %}not verified{% endif %}
+                </span>
+                <span class="status-badge {% if user.phone_verified %}verified{% else %}pending{% endif %}">
+                  <i class="bi {% if user.phone_verified %}bi-check-circle{% else %}bi-exclamation-circle{% endif %}"></i>
+                  Phone {% if user.phone_verified %}verified{% else %}not verified{% endif %}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-2">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="profile-panel mb-4">
+              <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                <div>
+                  <h2 class="profile-panel-title mb-0">Profile details</h2>
+                  <span class="profile-help">Keep your details up to date.</span>
+                </div>
+                <button class="btn btn-outline-primary btn-sm" type="button" data-profile-toggle>Edit profile</button>
+              </div>
+              <form id="profileForm" class="profile-form is-readonly" method="post" data-has-errors="{% if user_form.errors %}true{% elif role_form and role_form.errors %}true{% else %}false{% endif %}">
+                {% csrf_token %}
+                {% if user_form.non_field_errors %}
+                  <div class="alert alert-danger">{{ user_form.non_field_errors }}</div>
+                {% endif %}
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">First name</label>
+                    {{ user_form.first_name }}
+                    {{ user_form.first_name.errors }}
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Last name</label>
+                    {{ user_form.last_name }}
+                    {{ user_form.last_name.errors }}
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Email</label>
+                    {{ user_form.email }}
+                    {{ user_form.email.errors }}
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">Phone number</label>
+                    {{ user_form.phone_number }}
+                    {{ user_form.phone_number.errors }}
+                  </div>
+                </div>
+
+                {% if role_form %}
+                  <hr class="profile-divider my-4">
+                  <div class="mb-3">
+                    <h3 class="profile-panel-title mb-1">Role details</h3>
+                    <div class="profile-help">These details help tailor your experience.</div>
+                  </div>
+                  <div class="row g-3">
+                    {% for field in role_form %}
+                      <div class="{% if field.name == 'bio' %}col-12{% else %}col-md-6{% endif %}">
+                        {% if field.field.widget.input_type == "checkbox" %}
+                          <div class="form-check mt-4">
+                            {{ field }}
+                            <label class="form-check-label">{{ field.label }}</label>
+                          </div>
+                        {% else %}
+                          <label class="form-label">{{ field.label }}</label>
+                          {{ field }}
+                        {% endif %}
+                        {{ field.errors }}
+                      </div>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+
+                <div class="d-flex justify-content-end mt-4 gap-2">
+                  <button class="btn btn-primary profile-action-btn profile-save-btn d-none" type="submit" name="profile_submit">Save changes</button>
+                  <button class="btn btn-outline-secondary profile-action-btn profile-cancel-btn d-none" type="button">Cancel</button>
+                </div>
+              </form>
+            </div>
+
+            <div class="profile-panel">
+              <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 gap-2">
+                <div>
+                  <h2 class="profile-panel-title mb-0">Security</h2>
+                  <span class="profile-help">Use a strong password to protect your account.</span>
+                </div>
+              </div>
+              <button class="btn btn-outline-primary btn-sm" type="button" data-password-toggle>Change password</button>
+              <form id="passwordForm" class="profile-form is-readonly d-none mt-4" method="post" data-has-errors="{% if password_form.errors %}true{% else %}false{% endif %}">
+                {% csrf_token %}
+                {% if password_form.non_field_errors %}
+                  <div class="alert alert-danger">{{ password_form.non_field_errors }}</div>
+                {% endif %}
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <label class="form-label">Current password</label>
+                    {{ password_form.old_password }}
+                    {{ password_form.old_password.errors }}
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">New password</label>
+                    {{ password_form.new_password1 }}
+                    {{ password_form.new_password1.errors }}
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">Confirm new password</label>
+                    {{ password_form.new_password2 }}
+                    {{ password_form.new_password2.errors }}
+                  </div>
+                </div>
+                <div class="d-flex justify-content-end mt-4 gap-2">
+                  <button class="btn btn-outline-primary profile-action-btn profile-save-btn d-none" type="submit" name="password_submit">Update password</button>
+                  <button class="btn btn-outline-secondary profile-action-btn profile-cancel-btn d-none" type="button">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="profile-panel mb-4">
+              <h3 class="profile-panel-title mb-3">Verification</h3>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div>
+                  <div class="fw-semibold">Email address</div>
+                  <div class="profile-help">{{ user.email }}</div>
+                </div>
+                <span class="status-badge {% if user.email_verified %}verified{% else %}pending{% endif %}">
+                  {% if user.email_verified %}Verified{% else %}Not verified{% endif %}
+                </span>
+              </div>
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <div class="fw-semibold">Phone number</div>
+                  <div class="profile-help">{{ user.phone_number|default:"Not provided" }}</div>
+                </div>
+                <span class="status-badge {% if user.phone_verified %}verified{% else %}pending{% endif %}">
+                  {% if user.phone_verified %}Verified{% else %}Not verified{% endif %}
+                </span>
+              </div>
+              <div class="d-grid mt-4">
+                <button class="btn btn-outline-secondary profile-action-btn" type="button" disabled>Verify now</button>
+              </div>
+            </div>
+
+            <div class="profile-panel">
+              <h3 class="profile-panel-title mb-3">Quick actions</h3>
+
+              {% if user.role == "freelancer" %}
+                <div class="quick-actions d-flex flex-column gap-3">
+
+                  <!-- Upload avatar -->
+                  <form class="quick-action border rounded-3 p-3 bg-light"
+                        method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="avatar_submit" value="1">
+
+                    <div class="fw-semibold mb-2">Upload avatar</div>
+
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                      <input
+                        id="avatarInput"
+                        class="visually-hidden"
+                        type="file"
+                        name="avatar"
+                        accept="image/*"
+                        data-avatar-input
+                      >
+
+                      <label for="avatarInput" class="btn btn-outline-primary btn-sm mb-0">
+                        {% if profile_obj and profile_obj.avatar %}Change photo{% else %}Choose photo{% endif %}
+                      </label>
+                    </div>
+
+                    <div class="form-text">JPG or PNG up to 5MB.</div>
+                  </form>
+
+                  <!-- Add portfolio -->
+                  <form class="quick-action border rounded-3 p-3 bg-light"
+                        method="post" enctype="multipart/form-data" data-portfolio-form>
+                    {% csrf_token %}
+
+                    <div class="fw-semibold mb-2">Add portfolio</div>
+
+                    {% if profile_obj and profile_obj.portfolio_file or profile_obj.portfolio_website %}
+                      <button class="btn btn-outline-primary btn-sm"
+                              type="button" data-portfolio-toggle>
+                        Change portfolio
+                      </button>
+                    {% endif %}
+
+                    <div class="portfolio-form-body {% if profile_obj and profile_obj.portfolio_file or profile_obj.portfolio_website %}d-none{% endif %}">
+                      <div class="d-flex gap-3 align-items-center mb-2">
+                        <div class="form-check m-0">
+                          <input class="form-check-input" type="radio" name="portfolio_mode"
+                                 id="portfolioModeLink" value="link" checked>
+                          <label class="form-check-label" for="portfolioModeLink">Link</label>
+                        </div>
+
+                        <div class="form-check m-0">
+                          <input class="form-check-input" type="radio" name="portfolio_mode"
+                                 id="portfolioModeFile" value="file">
+                          <label class="form-check-label" for="portfolioModeFile">File</label>
+                        </div>
+                      </div>
+
+                      <div class="d-flex flex-column">
+                        <div data-portfolio-option="link">
+                          <input class="form-control form-control-sm" type="url"
+                                 name="portfolio_website" placeholder="Portfolio link">
+                        </div>
+
+                        <div class="d-none mt-2" data-portfolio-option="file">
+                          <input class="form-control form-control-sm" type="file"
+                                 name="portfolio_file" accept=".pdf">
+                        </div>
+
+                        <button class="btn btn-outline-primary btn-sm mt-2 align-self-start"
+                                type="submit" name="portfolio_submit">
+                          Save portfolio
+                        </button>
+
+                        <div class="form-text">Upload a PDF or add a link.</div>
+                      </div>
+                    </div>
+                  </form>
+
+                </div>
+              {% else %}
+                <div class="profile-help mb-3">Create projects and manage your team.</div>
+                <a class="btn btn-primary btn-sm" href="{% url 'projects:project_create' %}">Create project</a>
+              {% endif %}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  (function () {
+    function setFormReadonly(form, readonly) {
+      if (!form) {
+        return;
+      }
+      form.classList.toggle("is-readonly", readonly);
+      const controls = form.querySelectorAll("input:not([type='hidden']), select, textarea");
+      controls.forEach((control) => {
+        if (readonly) {
+          control.setAttribute("disabled", "disabled");
+        } else {
+          control.removeAttribute("disabled");
+        }
+      });
+      const saveButton = form.querySelector(".profile-save-btn");
+      const cancelButton = form.querySelector(".profile-cancel-btn");
+      if (saveButton) {
+        saveButton.classList.toggle("d-none", readonly);
+      }
+      if (cancelButton) {
+        cancelButton.classList.toggle("d-none", readonly);
+      }
+    }
+
+    function initToggle(toggleSelector, formId, hideUntilOpen) {
+      const toggleButton = document.querySelector(toggleSelector);
+      const form = document.getElementById(formId);
+      if (!toggleButton || !form) {
+        return;
+      }
+      const hasErrors = form.getAttribute("data-has-errors") === "true";
+      if (hideUntilOpen) {
+        if (hasErrors) {
+          form.classList.remove("d-none");
+          toggleButton.classList.add("d-none");
+        } else {
+          form.classList.add("d-none");
+        }
+        setFormReadonly(form, false);
+      } else {
+        setFormReadonly(form, !hasErrors);
+        if (hasErrors) {
+          toggleButton.classList.add("d-none");
+        }
+      }
+      toggleButton.addEventListener("click", function () {
+        form.classList.remove("d-none");
+        setFormReadonly(form, false);
+        toggleButton.classList.add("d-none");
+      });
+      const cancelButton = form.querySelector(".profile-cancel-btn");
+      if (cancelButton) {
+        cancelButton.addEventListener("click", function () {
+          form.reset();
+          if (hideUntilOpen) {
+            form.classList.add("d-none");
+          } else {
+            setFormReadonly(form, true);
+          }
+          toggleButton.classList.remove("d-none");
+        });
+      }
+    }
+
+    function initAvatarAutoSubmit() {
+      document.querySelectorAll("[data-avatar-input]").forEach((input) => {
+        input.addEventListener("change", function () {
+          if (!input.files || input.files.length === 0) {
+            return;
+          }
+          const form = input.closest("form");
+          if (form) {
+            form.submit();
+          }
+        });
+      });
+    }
+
+    function initPortfolioToggle() {
+      const form = document.querySelector("[data-portfolio-form]");
+      if (!form) {
+        return;
+      }
+      const toggleButton = form.querySelector("[data-portfolio-toggle]");
+      const formBody = form.querySelector(".portfolio-form-body");
+      const linkOption = form.querySelector('[data-portfolio-option="link"]');
+      const fileOption = form.querySelector('[data-portfolio-option="file"]');
+      const radios = form.querySelectorAll('input[name="portfolio_mode"]');
+      const sync = function () {
+        const selected = form.querySelector('input[name="portfolio_mode"]:checked');
+        const mode = selected ? selected.value : "link";
+        if (mode == "file") {
+          if (fileOption) {
+            fileOption.classList.remove("d-none");
+          }
+          if (linkOption) {
+            linkOption.classList.add("d-none");
+          }
+        } else {
+          if (linkOption) {
+            linkOption.classList.remove("d-none");
+          }
+          if (fileOption) {
+            fileOption.classList.add("d-none");
+          }
+        }
+      };
+      radios.forEach((radio) => {
+        radio.addEventListener("change", sync);
+      });
+      sync();
+      if (toggleButton && formBody) {
+        toggleButton.addEventListener("click", function () {
+          formBody.classList.remove("d-none");
+          toggleButton.classList.add("d-none");
+        });
+      }
+    }
+
+    initToggle("[data-profile-toggle]", "profileForm");
+    initToggle("[data-password-toggle]", "passwordForm", true);
+    initAvatarAutoSubmit();
+    initPortfolioToggle();
+  })();
+</script>
+{% endblock %}

@@ -1,0 +1,221 @@
+.profile-page {
+  background: #f5f7fb;
+}
+
+.profile-hero {
+  position: relative;
+  padding: 3.5rem 0 2.5rem;
+  color: #f8fafc;
+  background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #0ea5a4 100%);
+  overflow: hidden;
+}
+
+.profile-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(59, 130, 246, 0.45), transparent 45%),
+    radial-gradient(circle at 88% 14%, rgba(20, 184, 166, 0.45), transparent 40%);
+  opacity: 0.8;
+}
+
+.profile-hero .container {
+  position: relative;
+  z-index: 1;
+}
+
+.profile-hero-card {
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  border-radius: 26px;
+  padding: 2rem;
+  box-shadow: 0 24px 45px rgba(15, 23, 42, 0.35);
+}
+
+.profile-avatar {
+  width: 86px;
+  height: 86px;
+  border-radius: 22px;
+  background: #e0ecff;
+  color: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 1.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+}
+
+.profile-title {
+  font-size: clamp(2rem, 2.6vw, 2.6rem);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.profile-subtitle {
+  color: rgba(226, 232, 240, 0.85);
+}
+
+.profile-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.16);
+  color: #e2e8f0;
+  font-size: 0.85rem;
+}
+
+.profile-panel {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  padding: 1.75rem;
+  box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
+}
+
+.profile-panel-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.status-badge {
+  border-radius: 999px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.status-badge.verified {
+  background: rgba(16, 185, 129, 0.18);
+  color: #047857;
+}
+
+.status-badge.pending {
+  background: rgba(248, 113, 113, 0.2);
+  color: #b91c1c;
+}
+
+.profile-form .form-control,
+.profile-form .form-select {
+  border-radius: 12px;
+  border-color: #e2e8f0;
+}
+
+.profile-form .form-control:focus,
+.profile-form .form-select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+}
+
+.profile-form.is-readonly .form-control,
+.profile-form.is-readonly .form-select,
+.profile-form.is-readonly textarea,
+.profile-form.is-readonly .form-check-input {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  border-color: #e2e8f0;
+  box-shadow: none;
+}
+
+.profile-form.is-readonly .form-control::placeholder,
+.profile-form.is-readonly textarea::placeholder {
+  color: #cbd5e1;
+}
+
+.profile-form.is-readonly .form-label,
+.profile-form.is-readonly .form-check-label {
+  color: #94a3b8;
+}
+
+.profile-help {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.profile-divider {
+  border-color: #e2e8f0;
+  opacity: 1;
+}
+
+.profile-action-btn {
+  border-radius: 999px;
+}
+
+@media (max-width: 991px) {
+  .profile-hero-card {
+    padding: 1.6rem;
+  }
+}
+
+.quick-actions {
+  display: grid;
+  gap: 1rem;
+}
+
+.quick-action {
+  padding: 0.85rem;
+  border: 1px dashed #e2e8f0;
+  border-radius: 14px;
+  background: #f8fafc;
+}
+.quick-avatar {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+
+
+.quick-avatar-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quick-file-label {
+  position: relative;
+  overflow: hidden;
+}
+
+.quick-file-input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.quick-action-toggle {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.quick-toggle-input {
+  position: absolute;
+  opacity: 0;
+}
+
+.quick-toggle-label {
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid #cbd5e1;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #475569;
+  background: #fff;
+  cursor: pointer;
+}
+
+.quick-toggle-input:checked + .quick-toggle-label {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+.quick-action-body {
+  display: flex;
+  flex-direction: column;
+}
