@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extra_css %}
+<style>
+  .auth-gradient {
+    background: linear-gradient(140deg, rgba(13, 26, 58, 0.18) 0%, rgba(29, 78, 216, 0.22) 45%, rgba(59, 130, 246, 0.18) 100%);
+  }
+  .client-form ::placeholder,
+  .client-form textarea::placeholder {
+    color: rgba(0, 0, 0, 0.2);
+    opacity: 1;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<main class="py-5 mt-4">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-7">
+        <div class="card border-0 shadow-sm">
+          <div class="card-body p-4 p-lg-5">
+            <h2 class="fw-bold mb-2">Client registration</h2>
+            <p class="text-muted mb-4">Create a client account to hire talent.</p>
+            <form method="post" novalidate class="client-form">
+              {% csrf_token %}
+              {{ form.non_field_errors }}
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">First name</label>
+                  {{ form.first_name }}
+                  {{ form.first_name.errors }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Last name</label>
+                  {{ form.last_name }}
+                  {{ form.last_name.errors }}
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Email</label>
+                  {{ form.email }}
+                  {{ form.email.errors }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Password</label>
+                  {{ form.password1 }}
+                  {{ form.password1.errors }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Confirm password</label>
+                  {{ form.password2 }}
+                  {{ form.password2.errors }}
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Categories</label>
+                  <div class="row g-2">
+                    {% for checkbox in form.category %}
+                      <div class="col-6 col-md-4">
+                        <div class="form-check">
+                          {{ checkbox.tag }}
+                          <label class="form-check-label" for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                  {{ form.category.errors }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Company name</label>
+                  {{ form.company_name }}
+                  {{ form.company_name.errors }}
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Location</label>
+                  {{ form.location }}
+                  <small class="text-muted d-block">Format: London, UK</small>
+                  {{ form.location.errors }}
+                </div>
+              </div>
+              <button class="btn btn-primary w-100 mt-4" type="submit">Create client account</button>
+            </form>
+            <p class="text-muted small mt-3 mb-0">
+              Already have an account? <a href="{% url 'accounts:login' %}" class="link-primary link-underline-opacity-0">Login</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

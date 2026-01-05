@@ -1,11 +1,5 @@
 body {
     font-family: "Poppins", sans-serif;
-    padding-top: 70px;
-}
-
-section {
-    margin-top: 5rem;
-    margin-bottom: 5rem;
 }
 
 .navbar-nav {
@@ -27,7 +21,7 @@ section {
 
 .hero {
     max-width: 1200px;
-    margin: 2rem auto;
+    margin: 0 auto 2rem;
     padding: 3rem 2rem;
     border: 2px solid #1e2a44;
     border-radius: 16px;
@@ -287,11 +281,12 @@ section {
 /* PROJECT DETAIL */
 .project-detail {
     background: #f8fafc;
+    padding-top: 0;
 }
 
 .project-hero {
     position: relative;
-    padding: 3.5rem 0;
+    padding: 0;
     background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #0ea5a4 100%);
     color: #f8fafc;
     overflow: hidden;
@@ -575,3 +570,38 @@ section {
         position: static;
     }
 }
+
+/* Login modal */
+.login-modal .modal-content {
+  border: 0;
+  border-radius: 32px;
+  overflow: hidden;
+  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.35);
+}
+
+.login-modal .modal-header {
+  background: linear-gradient(120deg, #0f172a 0%, #1d4ed8 60%, #14b8a6 100%);
+  color: #f8fafc;
+  padding: 1.75rem 2rem 1.25rem;
+  border-radius: 32px 32px 0 0;
+}
+
+.login-modal .btn-close {
+  filter: invert(1);
+}
+
+.login-modal .modal-body {
+  background: #f8fafc;
+  padding: 1.75rem 2rem 2rem;
+}
+
+.login-modal .form-control {
+  border-radius: 12px;
+  border-color: #e2e8f0;
+}
+
+.login-modal .form-control:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
+}
+

@@ -136,8 +136,10 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 MEDIA_URL = "/media/"
 
-LOGIN_URL = "login"
+LOGIN_URL = "home"
 
 LOGIN_REDIRECT_URL = "home"
 
 LOGOUT_REDIRECT_URL = "home"
+
+X_FRAME_OPTIONS = "SAMEORIGIN"

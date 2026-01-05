@@ -20,11 +20,12 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from accounts.views import index
+from accounts.views import index, about
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", index, name="home"),
+    path("about/", about, name="about"),
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path("dashboard/", include("dashboard.urls", namespace="dashboard")),
     path("projects/", include("projects.urls", namespace="projects"))

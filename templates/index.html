@@ -217,95 +217,31 @@
         </div>
 
         <div class="row g-4 justify-content-center">
-
-          <!-- Category 1 -->
-          <div class="col-12 col-sm-6 col-lg-3">
-            <div class="category-card h-100">
-              <div class="category-icon">
-                <i class="bi bi-code-slash"></i>
-              </div>
-              <h5 class="category-title">Programming &amp; Tech</h5>
-              <p class="category-meta">5,234 freelancers</p>
+          {% url 'dashboard:find_talent' as find_talent_url %}
+          {% for category in categories %}
+            <div class="col-12 col-sm-6 col-lg-3">
+              {% with category_id=category.id|stringformat:"s" %}
+                {% with target=find_talent_url|add:"?category="|add:category_id %}
+                  <a
+                    class="category-card h-100 d-block text-decoration-none text-reset"
+                    href="{% if user.is_authenticated %}{{ target }}{% else %}{% url 'accounts:login' %}?next={{ target|urlencode }}{% endif %}"
+                  >
+                    <div class="category-icon">
+                      <i class="bi {% cycle 'bi-code-slash' 'bi-palette' 'bi-pen' 'bi-camera' 'bi-megaphone' 'bi-briefcase' 'bi-music-note-beamed' 'bi-film' %}"></i>
+                    </div>
+                    <h5 class="category-title">{{ category.name }}</h5>
+                    <p class="category-meta">
+                      {% if category.freelancer_count %}
+                        {{ category.freelancer_count }} freelancers
+                      {% else %}
+                        No freelancers yet
+                      {% endif %}
+                    </p>
+                  </a>
+                {% endwith %}
+              {% endwith %}
             </div>
-          </div>
-
-          <!-- Category 2 -->
-          <div class="col-12 col-sm-6 col-lg-3">
-            <div class="category-card h-100">
-              <div class="category-icon">
-                <i class="bi bi-palette"></i>
-              </div>
-              <h5 class="category-title">Design &amp; Creative</h5>
-              <p class="category-meta">4,892 freelancers</p>
-            </div>
-          </div>
-
-          <!-- Category 3 -->
-          <div class="col-12 col-sm-6 col-lg-3">
-            <div class="category-card h-100">
-              <div class="category-icon">
-                <i class="bi bi-pen"></i>
-              </div>
-              <h5 class="category-title">Writing &amp; Translation</h5>
-              <p class="category-meta">3,456 freelancers</p>
-            </div>
-          </div>
-
-          <!-- Category 4 -->
-          <div class="col-12 col-sm-6 col-lg-3">
-            <div class="category-card h-100">
-              <div class="category-icon">
-                <i class="bi bi-camera"></i>
-              </div>
-              <h5 class="category-title">Photography</h5>
-              <p class="category-meta">2,678 freelancers</p>
-            </div>
-          </div>
-
-          <!-- Category 5 -->
-          <div class="col-12 col-sm-6 col-lg-3">
-            <div class="category-card h-100">
-              <div class="category-icon">
-                <i class="bi bi-megaphone"></i>
-              </div>
-              <h5 class="category-title">Marketing &amp; Sales</h5>
-              <p class="category-meta">3,891 freelancers</p>
-            </div>
-          </div>
-
-          <!-- Category 6 (active/selected приклад) -->
-          <div class="col-12 col-sm-6 col-lg-3">
-            <div class="category-card h-100 category-card">
-              <div class="category-icon">
-                <i class="bi bi-briefcase"></i>
-              </div>
-              <h5 class="category-title">Business &amp; Admin</h5>
-              <p class="category-meta">2,234 freelancers</p>
-            </div>
-          </div>
-
-          <!-- Category 7 -->
-          <div class="col-12 col-sm-6 col-lg-3">
-            <div class="category-card h-100">
-              <div class="category-icon">
-                <i class="bi bi-music-note-beamed"></i>
-              </div>
-              <h5 class="category-title">Music &amp; Audio</h5>
-              <p class="category-meta">1,567 freelancers</p>
-            </div>
-          </div>
-
-          <!-- Category 8 -->
-          <div class="col-12 col-sm-6 col-lg-3">
-            <div class="category-card h-100">
-              <div class="category-icon">
-                <i class="bi bi-film"></i>
-              </div>
-              <h5 class="category-title">Video &amp; Animation</h5>
-              <p class="category-meta">2,890 freelancers</p>
-            </div>
-          </div>
-
+          {% endfor %}
         </div>
       </div>
     </section>

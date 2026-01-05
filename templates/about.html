@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/about.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main class="about-page">
+    <section class="about-hero">
+      <div class="container">
+        <div class="about-hero-card">
+          <span class="about-chip"><i class="bi bi-compass"></i> Built for modern client teams</span>
+          <h1 class="about-title">About ClientHub</h1>
+          <p class="about-subtitle">
+            We help ambitious teams find, hire, and collaborate with freelance talent in one
+            focused workspace. Clear briefs, fast matching, and human support make every engagement feel
+            predictable and productive.
+          </p>
+          <div class="about-hero-grid">
+            <div class="about-hero-stat">
+              <div class="about-stat-label">Active clients</div>
+              <div class="about-stat-value">{{ active_clients }}+</div>
+            </div>
+            <div class="about-hero-stat">
+              <div class="about-stat-label">Freelancers onboarded</div>
+              <div class="about-stat-value">{{ freelancers_onboarded }}+</div>
+            </div>
+            <div class="about-hero-stat">
+              <div class="about-stat-label">Projects launched</div>
+              <div class="about-stat-value">{{ projects_launched }}+</div>
+            </div>
+            <div class="about-hero-stat">
+              <div class="about-stat-label">Avg. match time</div>
+              <div class="about-stat-value">48 hrs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="container">
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-6">
+            <div class="about-panel h-100">
+              <div class="about-kicker">Our mission</div>
+              <h2 class="about-heading">Make hiring feel human, fast, and repeatable.</h2>
+              <p class="about-body mb-0">
+                ClientHub was created to remove the chaos from freelance hiring. We pair clients with
+                vetted professionals, help scope the work, and keep communication flowing so every project
+                ships with confidence.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="about-panel h-100">
+              <div class="about-kicker">What we optimize</div>
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <div class="about-highlight">
+                    <h5 class="mb-2">Clarity</h5>
+                    <p class="about-body mb-0">Structured briefs and timelines replace guesswork.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="about-highlight">
+                    <h5 class="mb-2">Trust</h5>
+                    <p class="about-body mb-0">Every freelancer is verified and quality-checked.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="about-highlight">
+                    <h5 class="mb-2">Momentum</h5>
+                    <p class="about-body mb-0">Fast matching keeps projects moving forward.</p>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="about-highlight">
+                    <h5 class="mb-2">Growth</h5>
+                    <p class="about-body mb-0">Partnerships built for long-term collaboration.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section pt-0">
+      <div class="container">
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <div class="about-panel h-100">
+              <div class="about-kicker">Values</div>
+              <h2 class="about-heading">How we show up</h2>
+              <p class="about-body">
+                We believe in transparent pricing, respectful collaboration, and outcomes that speak for themselves.
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="about-values">
+              <div class="about-value-card">
+                <div class="about-value-icon"><i class="bi bi-lightning-charge"></i></div>
+                <h5 class="mb-2">Decisive execution</h5>
+                <p class="about-body mb-0">We help clients move from idea to launch with clear ownership and fast feedback loops.</p>
+              </div>
+              <div class="about-value-card">
+                <div class="about-value-icon"><i class="bi bi-people"></i></div>
+                <h5 class="mb-2">Shared accountability</h5>
+                <p class="about-body mb-0">Every engagement includes goal tracking, communication checkpoints, and milestone reviews.</p>
+              </div>
+              <div class="about-value-card">
+                <div class="about-value-icon"><i class="bi bi-shield-check"></i></div>
+                <h5 class="mb-2">Quality by design</h5>
+                <p class="about-body mb-0">We invest in vetting, tooling, and support so teams can scale without quality slips.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section pt-0">
+      <div class="container">
+        <div class="row g-4 align-items-center">
+          <div class="col-lg-6">
+            <div class="about-panel h-100">
+              <div class="about-kicker">Our journey</div>
+              <h2 class="about-heading">From side project to trusted hub</h2>
+              <div class="about-timeline">
+                <div class="about-timeline-item">
+                  <div class="about-timeline-title">2019 · The first client sprint</div>
+                  <div class="about-body">A small team built the first collaboration space for two SaaS founders.</div>
+                </div>
+                <div class="about-timeline-item">
+                  <div class="about-timeline-title">2021 · Marketplace expansion</div>
+                  <div class="about-body">We introduced vetted talent pools and structured onboarding for every role.</div>
+                </div>
+                <div class="about-timeline-item">
+                  <div class="about-timeline-title">2023 · ClientHub platform</div>
+                  <div class="about-body">A full workflow with briefs, milestones, and payments under one roof.</div>
+                </div>
+                <div class="about-timeline-item">
+                  <div class="about-timeline-title">Today · Global collaboration</div>
+                  <div class="about-body">Supporting distributed teams across product, design, and growth.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="about-panel h-100">
+              <div class="about-kicker">Community</div>
+              <h2 class="about-heading">Built for long-term partnerships</h2>
+              <p class="about-body">
+                We host weekly office hours, publish playbooks, and provide a dedicated success manager to every
+                active client. Freelancers gain access to curated briefs, feedback loops, and clear payment terms.
+              </p>
+              <div class="about-highlight mt-4">
+                <h5 class="mb-2">Our promise</h5>
+                <p class="about-body mb-0">
+                  Every project gets an experienced lead, a clear plan, and proactive status updates.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section pt-0">
+      <div class="container">
+        <div class="about-cta d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+          <div>
+            <div class="about-kicker text-uppercase">Ready to build?</div>
+            <h2 class="mb-2">Let us introduce you to your next freelancer.</h2>
+            <p class="mb-0 text-light">Share your brief and we will recommend the best matches in under 48 hours.</p>
+          </div>
+          <div class="d-flex gap-2">
+            <a class="btn btn-light text-primary fw-semibold" href="{% url 'dashboard:find_talent' %}">Find talent</a>
+            <a class="btn btn-outline-light" href="{% url 'projects:find_work' %}">Find work</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock %}

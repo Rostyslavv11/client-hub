@@ -26,7 +26,7 @@
           <a class="nav-link" href="{% if user.is_authenticated %}{% url 'dashboard:find_talent' %}{% else %}{% url 'accounts:login' %}?next={% url 'dashboard:find_talent' %}{% endif %}">Find Talent</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% if user.is_authenticated %}#{% else %}{% url 'accounts:login' %}?next={% url 'home' %}{% endif %}">About</a>
+          <a class="nav-link" href="{% url 'about' %}">About</a>
         </li>
       </ul>
 
@@ -94,7 +94,7 @@
             </button>
 
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" href="{% url 'dashboard:overview' %}"><i class="bi bi-person-circle me-2"></i>Your profile</a></li>
+              <li><a class="dropdown-item" href="{% url 'dashboard:profile' %}"><i class="bi bi-person-circle me-2"></i>Your profile</a></li>
               <li><a class="dropdown-item" href="{% url 'dashboard:messages' %}"><i class="bi bi-chat-dots me-2"></i>Messages</a></li>
               {% if user.role == "freelancer" %}
                 <li><hr class="dropdown-divider"></li>
@@ -117,8 +117,7 @@
             </ul>
           </div>
         {% else %}
-          <a class="btn btn-outline-light me-2" href="{% url 'accounts:login' %}">Login</a>
-          <a class="btn btn-primary" href="{% url 'accounts:register' %}">Sign up</a>
+          <button class="btn btn-outline-light me-2" type="button" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
         {% endif %}
       </div>
     </div>

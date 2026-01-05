@@ -21,8 +21,82 @@
   {% include "includes/navbar.html" %}
   {% block content %}{% endblock %}
   {% include "includes/footer.html" %}
+
+  <div class="modal fade login-modal" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <div>
+            <h4 class="modal-title" id="loginModalLabel">Welcome back</h4>
+            <p class="text-muted mb-0">Log in to continue to ClientHub.</p>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body pt-3">
+          <form method="post" action="{% url 'accounts:login' %}">
+            {% csrf_token %}
+            {% if login_form and login_form.non_field_errors %}
+              <div class="alert alert-danger py-2" role="alert">{{ login_form.non_field_errors }}</div>
+            {% endif %}
+            <input type="hidden" name="next" value="{% if login_next %}{{ login_next }}{% elif request.GET.next %}{{ request.GET.next }}{% else %}{{ request.path }}{% endif %}">
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="email" name="username" class="form-control" placeholder="you@example.com" autocomplete="email" value="{{ login_form.username.value|default_if_none:'' }}">
+              {% if login_form and login_form.username.errors %}
+                <div class="text-danger small mt-1">{{ login_form.username.errors }}</div>
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input type="password" name="password" class="form-control" placeholder="********" autocomplete="current-password">
+              {% if login_form and login_form.password.errors %}
+                <div class="text-danger small mt-1">{{ login_form.password.errors }}</div>
+              {% endif %}
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="rememberMe" disabled>
+                <label class="form-check-label text-muted small" for="rememberMe">Remember me</label>
+              </div>
+              <a href="#" class="small text-decoration-none">Forgot password?</a>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Log in</button>
+            <p class="text-muted small text-center mt-3 mb-0">
+              New to ClientHub? <a href="{% url 'accounts:register' %}">Create an account</a>
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    (function () {
+      let shouldOpen = "0";
+      {% if not user.is_authenticated %}
+        {% if show_login_modal %}
+          shouldOpen = "1";
+        {% elif request.path == '/' %}
+          {% if request.GET.next or request.GET.login %}
+            shouldOpen = "1";
+          {% endif %}
+        {% endif %}
+      {% endif %}
+      if (shouldOpen !== "1") {
+        return;
+      }
+      const modalEl = document.getElementById("loginModal");
+      if (!modalEl || !window.bootstrap) {
+        return;
+      }
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
+    })();
+  </script>
+  <!-- login-modal-auto-open -->
+
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>
