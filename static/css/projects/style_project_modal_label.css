@@ -38,13 +38,14 @@ box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.15);
 
 .apply-modal .form-control::placeholder,
 .apply-modal textarea::placeholder {
-color: rgba(15, 23, 42, 0.45);
+color: rgba(0, 0, 0, 0.2);
 opacity: 1;
 }
 
 .apply-modal .form-control::-ms-input-placeholder,
 .apply-modal textarea::-ms-input-placeholder {
-color: rgba(15, 23, 42, 0.45);
+color: rgba(0, 0, 0, 0.2);
+opacity: 1;
 }
 
 .apply-modal .apply-pill {
@@ -59,3 +60,4 @@ border: 1px solid rgba(226, 232, 240, 0.35);
 font-size: 0.85rem;
 margin-bottom: 0.35rem;
 }
+
