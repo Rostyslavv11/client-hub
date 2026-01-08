@@ -1,3 +1,5 @@
+from decimal import Decimal, ROUND_HALF_UP
+
 from django.conf import settings
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
@@ -69,6 +71,9 @@ class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=30, blank=True)
     email_verified = models.BooleanField(default=False)
     phone_verified = models.BooleanField(default=False)
+    email_verification_sent_at = models.DateTimeField(null=True, blank=True)
+    phone_verification_sent_at = models.DateTimeField(null=True, blank=True)
+    phone_verification_code = models.CharField(max_length=6, blank=True)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []
@@ -89,6 +94,12 @@ class ClientProfile(models.Model):
     location = models.CharField(max_length=120, blank=True)
     is_open_to_agencies = models.BooleanField(default=False)
     hire_rate = models.PositiveIntegerField(default=0)
+
+    @property
+    def rating_5(self):
+        rate = Decimal(self.hire_rate or 0)
+        rating = (rate * Decimal("5")) / Decimal("100")
+        return rating.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
 
 class FreelancerProfile(models.Model):
