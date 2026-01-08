@@ -17,9 +17,11 @@
   <link rel="icon" type="image/x-icon" href="{% static 'images/icons-freelance.ico' %}">
   {% block extra_css %}{% endblock %}
 </head>
-<body>
+<body data-user-id="{% if user.is_authenticated %}{{ user.id }}{% endif %}">
   {% include "includes/navbar.html" %}
-  {% block content %}{% endblock %}
+  <main class="page-content">
+    {% block content %}{% endblock %}
+  </main>
   {% include "includes/footer.html" %}
 
   <div class="modal fade login-modal" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
@@ -97,6 +99,9 @@
   </script>
   <!-- login-modal-auto-open -->
 
+  {% if user.is_authenticated %}
+    <script src="{% static 'js/realtime/notifications.js' %}"></script>
+  {% endif %}
   {% block extra_scripts %}{% endblock %}
 </body>
 </html>

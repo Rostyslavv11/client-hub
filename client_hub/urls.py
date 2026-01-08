@@ -28,5 +28,6 @@ urlpatterns = [
     path("about/", about, name="about"),
     path("accounts/", include("accounts.urls", namespace="accounts")),
     path("dashboard/", include("dashboard.urls", namespace="dashboard")),
-    path("projects/", include("projects.urls", namespace="projects"))
+    path("projects/", include("projects.urls", namespace="projects")),
+    path("messages/", include("messages_app.urls", namespace="messages_app")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

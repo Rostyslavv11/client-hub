@@ -1,0 +1,18 @@
+from .models import Notification
+
+
+def notifications_context(request):
+    if not request.user.is_authenticated:
+        return {}
+    notifications = (
+        Notification.objects.filter(user=request.user)
+        .select_related("actor")
+        .order_by("-created_at")[:5]
+    )
+    unread_count = Notification.objects.filter(
+        user=request.user, is_read=False
+    ).count()
+    return {
+        "notifications": notifications,
+        "notifications_unread_count": unread_count,
+    }

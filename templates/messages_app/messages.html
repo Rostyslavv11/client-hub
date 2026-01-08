@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/dashboard/messages.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="container py-5 messages-page">
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="card messages-sidebar h-100">
+          <div class="card-header bg-white d-flex align-items-center justify-content-between">
+            <strong>Conversations</strong>
+            <span class="text-muted small">{{ conversations|length }} total</span>
+          </div>
+          <div class="list-group list-group-flush messages-list">
+            {% for convo in conversations %}
+              <a
+                class="list-group-item list-group-item-action {% if active_conversation and convo.id == active_conversation.id %}active{% endif %}"
+                href="?conversation={{ convo.id }}"
+              >
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center gap-3">
+                    <div class="messages-avatar">
+                      {% if user == convo.client %}
+                        {{ convo.freelancer.get_full_name|default:convo.freelancer.email|slice:":1" }}
+                      {% else %}
+                        {{ convo.client.get_full_name|default:convo.client.email|slice:":1" }}
+                      {% endif %}
+                    </div>
+                    <div>
+                      <div class="fw-semibold">
+                        {% if user == convo.client %}
+                          {{ convo.freelancer.get_full_name|default:convo.freelancer.email }}
+                        {% else %}
+                          {{ convo.client.get_full_name|default:convo.client.email }}
+                        {% endif %}
+                      </div>
+                      <small class="text-muted">
+                        {{ convo.project.title|default:"General conversation" }}
+                      </small>
+                    </div>
+                  </div>
+                  {% if convo.unread_count %}
+                    <span class="badge bg-primary rounded-pill">{{ convo.unread_count }}</span>
+                  {% endif %}
+                </div>
+                <div class="messages-meta">
+                  <small class="text-muted">Updated {{ convo.updated_at|date:"M d, H:i" }}</small>
+                </div>
+              </a>
+            {% empty %}
+              <div class="list-group-item text-muted messages-empty">
+                <div class="messages-empty__icon">
+                  <i class="bi bi-chat-square-dots"></i>
+                </div>
+                <div class="fw-semibold">No conversations yet</div>
+                <div class="small">Invites and applications will appear here.</div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card messages-chat h-100">
+          <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            {% if active_conversation %}
+              <div>
+                <div class="fw-semibold messages-title">
+                  {% if user == active_conversation.client %}
+                    {{ active_conversation.freelancer.get_full_name|default:active_conversation.freelancer.email }}
+                  {% else %}
+                    {{ active_conversation.client.get_full_name|default:active_conversation.client.email }}
+                  {% endif %}
+                </div>
+                <small class="text-muted">
+                  {{ active_conversation.project.title|default:"General conversation" }}
+                </small>
+              </div>
+            {% else %}
+              <div class="text-muted">Pick a conversation to start chatting.</div>
+            {% endif %}
+          </div>
+          <div
+            class="card-body chat-body"
+            id="chatMessages"
+            data-conversation-id="{% if active_conversation %}{{ active_conversation.id }}{% endif %}"
+            data-current-user-id="{{ user.id }}"
+          >
+            {% if active_conversation %}
+              {% for message in message_list %}
+                <div class="chat-message {% if message.sender_id == user.id %}chat-message--outgoing{% else %}chat-message--incoming{% endif %} {% if message.kind == 'system' %}chat-message--system{% endif %}">
+                  <div class="chat-message__bubble">
+                    <div class="chat-message__body">{{ message.body }}</div>
+                    <div class="chat-message__meta">
+                      <span>{{ message.sender.get_full_name|default:message.sender.email }}</span>
+                      <span>{{ message.created_at|date:"H:i" }}</span>
+                    </div>
+                  </div>
+                </div>
+                {% if user.role == "client" and message.application and message.application.status == "in_review" %}
+                  <div class="chat-action">
+                    <form method="post" action="{% url 'dashboard:decide_application' message.application.id %}" class="d-flex gap-2">
+                      {% csrf_token %}
+                      <input type="hidden" name="action" value="accept">
+                      <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                    </form>
+                    <form method="post" action="{% url 'dashboard:decide_application' message.application.id %}" class="d-flex gap-2">
+                      {% csrf_token %}
+                      <input type="hidden" name="action" value="deny">
+                      <button type="submit" class="btn btn-outline-danger btn-sm">Deny</button>
+                    </form>
+                  </div>
+                {% endif %}
+              {% empty %}
+                <div class="chat-empty">
+                  <div class="chat-empty__icon"><i class="bi bi-chat-left-text"></i></div>
+                  <div class="fw-semibold">Start the conversation</div>
+                  <div class="text-muted small">Say hello and share project details.</div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="chat-empty">
+                <div class="chat-empty__icon"><i class="bi bi-chat-square"></i></div>
+                <div class="fw-semibold">No conversation selected</div>
+                <div class="text-muted small">Choose a thread on the left to begin.</div>
+              </div>
+            {% endif %}
+          </div>
+          <div class="card-footer bg-white">
+            <form id="chatForm" class="d-flex gap-2">
+              <input
+                type="text"
+                class="form-control"
+                id="chatInput"
+                placeholder="{% if active_conversation %}Write a message...{% else %}Select a conversation to chat{% endif %}"
+                {% if not active_conversation %}disabled{% endif %}
+              >
+              <button class="btn btn-primary" type="submit" {% if not active_conversation %}disabled{% endif %}>
+                Send
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_scripts %}
+  <script src="{% static 'js/realtime/messages.js' %}"></script>
+{% endblock %}

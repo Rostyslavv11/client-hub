@@ -37,46 +37,45 @@
               class="btn btn-outline-light position-relative"
               type="button"
               data-bs-toggle="dropdown"
+              data-notifications-toggle
               aria-expanded="false"
               aria-label="Notifications"
             >
               <i class="bi bi-bell"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                3
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                data-notifications-badge
+                {% if not notifications_unread_count %}style="display: none;"{% endif %}
+              >
+                {{ notifications_unread_count|default:0 }}
                 <span class="visually-hidden">unread notifications</span>
               </span>
             </button>
-            <ul class="dropdown-menu dropdown-menu-end">
+            <ul class="dropdown-menu dropdown-menu-end" data-notifications-list>
               <li class="dropdown-header text-muted">Notifications</li>
-              <li>
-                <a class="dropdown-item d-flex align-items-start gap-2" href="#">
-                  <i class="bi bi-check-circle text-success mt-1"></i>
-                  <div>
-                    <div class="fw-semibold">Application accepted</div>
-                    <small class="text-muted">Client approved your proposal.</small>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item d-flex align-items-start gap-2" href="#">
-                  <i class="bi bi-chat-dots text-primary mt-1"></i>
-                  <div>
-                    <div class="fw-semibold">New message</div>
-                    <small class="text-muted">You have a new chat message.</small>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item d-flex align-items-start gap-2" href="#">
-                  <i class="bi bi-briefcase text-warning mt-1"></i>
-                  <div>
-                    <div class="fw-semibold">Project update</div>
-                    <small class="text-muted">A project you saved was updated.</small>
-                  </div>
-                </a>
-              </li>
+              {% if notifications %}
+                {% for notification in notifications %}
+                  <li>
+                    <a class="dropdown-item d-flex align-items-start gap-2" href="{{ notification.link }}">
+                      {% if notification.kind == "message" %}
+                        <i class="bi bi-chat-dots text-primary mt-1"></i>
+                      {% elif notification.kind == "invite" %}
+                        <i class="bi bi-envelope-paper text-warning mt-1"></i>
+                      {% else %}
+                        <i class="bi bi-briefcase text-success mt-1"></i>
+                      {% endif %}
+                      <div>
+                        <div class="fw-semibold">{{ notification.title }}</div>
+                        <small class="text-muted">{{ notification.body }}</small>
+                      </div>
+                    </a>
+                  </li>
+                {% endfor %}
+              {% else %}
+                <li class="dropdown-item text-muted" data-notifications-empty>No notifications yet.</li>
+              {% endif %}
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item text-center" href="#">View all</a></li>
+              <li><a class="dropdown-item text-center" href="{% url 'dashboard:messages' %}">View all</a></li>
             </ul>
           </div>
           <div class="dropdown">
@@ -99,13 +98,11 @@
               {% if user.role == "freelancer" %}
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{% url 'dashboard:freelancer_jobs' %}"><i class="bi bi-briefcase me-2"></i>Saved jobs</a></li>
-                <li><a class="dropdown-item" href="{% url 'dashboard:freelancer_earnings' %}"><i class="bi bi-cash-stack me-2"></i>Earnings</a></li>
                 <li><a class="dropdown-item" href="{% url 'dashboard:freelancer_portfolio' %}"><i class="bi bi-collection me-2"></i>Portfolio</a></li>
               {% elif user.role == "client" %}
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{% url 'dashboard:client_projects' %}"><i class="bi bi-clipboard-check me-2"></i>My projects</a></li>
                 <li><a class="dropdown-item" href="{% url 'dashboard:client_hired_freelancers' %}"><i class="bi bi-people me-2"></i>Hired freelancers</a></li>
-                <li><a class="dropdown-item" href="{% url 'dashboard:client_payments' %}"><i class="bi bi-credit-card me-2"></i>Payments</a></li>
               {% endif %}
               <li><hr class="dropdown-divider"></li>
               <li>
