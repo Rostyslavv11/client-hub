@@ -17,8 +17,6 @@ class ApplicationForm(forms.ModelForm):
     class Meta:
         model = Application
         fields = [
-            "full_name",
-            "email",
             "pitch",
             "portfolio_url",
             "portfolio_file",
@@ -29,14 +27,6 @@ class ApplicationForm(forms.ModelForm):
         ]
 
         widgets = {
-            "full_name": forms.TextInput(attrs={
-                "class": "form-control",
-                "placeholder": "Alex Morgan",
-            }),
-            "email": forms.EmailInput(attrs={
-                "class": "form-control",
-                "placeholder": "alex@email.com",
-            }),
             "pitch": forms.Textarea(attrs={
                 "class": "form-control",
                 "rows": "4",

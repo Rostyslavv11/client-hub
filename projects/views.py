@@ -11,6 +11,13 @@ from projects.forms import ApplicationForm, ProjectForm
 from projects.models import Project, Tags, Application, SavedProject
 from django.utils import timezone
 from datetime import timedelta
+from messages_app.models import Message, Notification
+from messages_app.realtime import broadcast_message, broadcast_notification
+from messages_app.services import (
+    create_message,
+    create_notification,
+    get_or_create_conversation,
+)
 
 
 class ProjectsListView(LoginRequiredMixin, ListView):
@@ -20,7 +27,8 @@ class ProjectsListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         queryset = queryset.filter(
-            status_of_publishing=Project.PublishingStatus.LAUNCHED
+            status_of_publishing=Project.PublishingStatus.LAUNCHED,
+            status=Project.Status.OPEN,
         ).order_by("-created_at")
         sorting = self.request.GET.get("sorting")
         q = self.request.GET.get("q")
@@ -98,14 +106,79 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         if Application.objects.filter(project=self.object, freelancer=request.user).exists():
-            messages.info(request, "You’ve already applied for this project")
+            messages.info(request, "You've already applied for this project")
             return redirect("projects:project_detail", pk=self.object.pk)
         form = ApplicationForm(request.POST, request.FILES)
         if form.is_valid():
             form.instance.freelancer = request.user
             form.instance.project = self.object
             form.instance.status = Application.Status.IN_REVIEW
-            form.save()
+            form.instance.full_name = (
+                request.user.get_full_name() or request.user.email
+            )
+            form.instance.email = request.user.email
+            application = form.save()
+            conversation, _ = get_or_create_conversation(
+                self.object,
+                self.object.client.user,
+                request.user,
+            )
+            pitch_text = (application.pitch or "").strip()
+            if not pitch_text:
+                pitch_text = (
+                    "I am interested in your project and can deliver a reliable, high-quality outcome."
+                )
+            portfolio_text = ""
+            if application.portfolio_url:
+                portfolio_text = f"Portfolio link: {application.portfolio_url}"
+            elif application.portfolio_file:
+                portfolio_text = "Portfolio file: attached"
+            availability_text = ""
+            if application.availability:
+                availability_text = (
+                    f"Availability: {application.get_availability_display()}."
+                )
+            timeline_text = ""
+            if application.estimated_timeline:
+                timeline_text = (
+                    f"Estimated timeline: {application.estimated_timeline}."
+                )
+            budget_text = ""
+            if application.proposed_budget:
+                budget_text = (
+                    f"Proposed budget: ${application.proposed_budget}."
+                )
+            notes_text = ""
+            if application.additional_notes:
+                notes_text = f"Additional notes: {application.additional_notes}"
+
+            parts = [
+                "Hello,",
+                pitch_text,
+                portfolio_text,
+                availability_text,
+                timeline_text,
+                budget_text,
+                notes_text,
+            ]
+            apply_body = "\n".join([part for part in parts if part])
+            apply_message = create_message(
+                conversation,
+                request.user,
+                apply_body,
+                kind=Message.Kind.SYSTEM,
+                application=application,
+            )
+            apply_notification = create_notification(
+                user=self.object.client.user,
+                actor=request.user,
+                kind=Notification.Kind.APPLY,
+                title="New application",
+                body=f"{request.user.get_full_name() or request.user.email} applied to {self.object.title}.",
+                conversation=conversation,
+            )
+            broadcast_message(apply_message)
+            broadcast_notification(apply_notification)
             messages.success(request, "Application submitted successfully")
             return redirect("projects:project_detail", pk=self.object.pk)
         context = self.get_context_data()
@@ -120,17 +193,6 @@ def save_project(request, pk):
     SavedProject.objects.get_or_create(user=request.user, project=project)
     messages.success(request, "Project saved")
     return redirect("projects:project_detail", pk=pk)
-
-
-class ApplicationCreateView(LoginRequiredMixin, CreateView):
-    model = Application
-    form_class = ApplicationForm
-    template_name = "projects/project_detail.html"
-
-    def form_valid(self, form):
-        form.instance.freelancer = self.request.user
-        form.instance.project_id = self.kwargs["project_id"]
-        return super().form_valid(form)
 
 
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
@@ -153,6 +215,9 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
 @require_POST
 def start_project(request, pk):
     project = get_object_or_404(Project, pk=pk, client__user=request.user)
+    if project.status != Project.Status.OPEN:
+        messages.error(request, "Only open projects can be launched.")
+        return redirect("dashboard:client_projects")
     project.status_of_publishing = Project.PublishingStatus.LAUNCHED
     project.save(update_fields=["status_of_publishing"])
     messages.success(request, "Project launched and visible in Find Work.")

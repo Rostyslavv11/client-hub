@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/projects/style_project_detail.css' %}">
 <link rel="stylesheet" href="{% static 'css/projects/style_project_modal_label.css' %}">
 {% endblock %}
 
@@ -67,7 +68,7 @@
               </div>
               <div>
                 <span class="project-cta-label">Client rating</span>
-                <span class="project-cta-value">4.9 (26 reviews)</span>
+                <span class="project-cta-value">{{ project.client.rating_5|floatformat:2 }}</span>
               </div>
               <div>
                 <span class="project-cta-label">Response time</span>
@@ -237,14 +238,6 @@
             </div>
           {% endif %}
           <div class="row g-3">
-              <div class="col-md-6">
-                <label class="form-label">Full name</label>
-                {{ form.full_name }}
-              </div>
-              <div class="col-md-6">
-                <label class="form-label">Email</label>
-                {{ form.email }}
-              </div>
               <div class="col-12">
                 <label class="form-label">Short pitch</label>
                 {{ form.pitch }}

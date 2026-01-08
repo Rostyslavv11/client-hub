@@ -130,6 +130,7 @@ class Application(models.Model):
         IN_REVIEW = "in_review", "In review"
         IN_PROGRESS = "in_progress", "In progress"
         COMPLETED = "completed", "Completed"
+        DECLINED = "declined", "Declined"
 
     class Availability(models.TextChoices):
         IMMEDIATE = "immediate", "Start immediately"
@@ -177,6 +178,43 @@ class Application(models.Model):
         has_file = bool(self.portfolio_file)
         if has_url == has_file:
             raise ValidationError("Provide either a portfolio link or a portfolio file (exactly one).")
+
+
+class Invitation(models.Model):
+    class Status(models.TextChoices):
+        SENT = "sent", "Sent"
+        ACCEPTED = "accepted", "Accepted"
+        DECLINED = "declined", "Declined"
+        CANCELED = "canceled", "Canceled"
+
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name="invitations",
+    )
+    client = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="sent_invitations",
+    )
+    freelancer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="received_invitations",
+    )
+    message = models.TextField(blank=True)
+    status = models.CharField(
+        max_length=20,
+        choices=Status.choices,
+        default=Status.SENT,
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.project.title} -> {self.freelancer_id}"
 
 
 class SavedProject(models.Model):
