@@ -19,7 +19,7 @@ body {
     radial-gradient(circle at 90% 10%, rgba(20, 184, 166, 0.18), transparent 40%),
     linear-gradient(180deg, #f8fafc 0%, #eef2ff 50%, #f8fafc 100%);
   overflow: hidden;
-  margin: 0;
+  margin-top: 3rem;
   min-height: calc(100vh - 70px);
 }
 

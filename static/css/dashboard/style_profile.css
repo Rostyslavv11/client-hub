@@ -4,7 +4,7 @@
 
 .profile-hero {
   position: relative;
-  padding: 3.5rem 0 2.5rem;
+  padding: 5.5rem 0 2.5rem;
   color: #f8fafc;
   background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 55%, #0ea5a4 100%);
   overflow: hidden;
@@ -91,6 +91,11 @@
 .status-badge.verified {
   background: rgba(16, 185, 129, 0.18);
   color: #047857;
+}
+
+.status-badge.verifying {
+  background: rgba(148, 163, 184, 0.25);
+  color: #475569;
 }
 
 .status-badge.pending {
