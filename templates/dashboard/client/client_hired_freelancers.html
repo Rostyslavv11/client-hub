@@ -145,6 +145,18 @@
                           </div>
                           <div class="mt-3 d-flex flex-wrap gap-2">
                             <a class="btn btn-outline-secondary btn-sm" href="{% url 'projects:project_detail' app.project.id %}">View project</a>
+                            {% if app.status == "in_review" %}
+                              <form method="post" action="{% url 'dashboard:decide_application' app.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="accept">
+                                <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                              </form>
+                              <form method="post" action="{% url 'dashboard:decide_application' app.id %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="deny">
+                                <button type="submit" class="btn btn-outline-danger btn-sm">Deny</button>
+                              </form>
+                            {% endif %}
                           </div>
                         </div>
                       </div>

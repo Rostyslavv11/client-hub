@@ -54,6 +54,13 @@
                       {% else %}
                         <span class="saved-badge" style="background:rgba(59, 130, 246, 0.12);color:#1d4ed8;">Drafted</span>
                       {% endif %}
+                      {% if project.status == "in_progress" %}
+                        <span class="saved-badge" style="background:rgba(245, 158, 11, 0.16);color:#b45309;">In progress</span>
+                      {% elif project.status == "completed" %}
+                        <span class="saved-badge" style="background:rgba(34, 197, 94, 0.16);color:#15803d;">Completed</span>
+                      {% else %}
+                        <span class="saved-badge" style="background:rgba(148, 163, 184, 0.2);color:#475569;">Open</span>
+                      {% endif %}
                       <span class="text-muted">Created {{ project.created_at|date:"M d, Y" }}</span>
                     </div>
                     <p class="mt-3 mb-0 text-muted">
@@ -73,6 +80,13 @@
                     <div class="saved-actions">
                       <a class="btn btn-primary" href="{% url 'projects:project_detail' project.id %}">View project</a>
                       <a class="btn btn-outline-secondary" href="{% url 'projects:project_edit' project.id %}">Edit</a>
+                      {% if project.in_progress_application %}
+                        <form method="post" action="{% url 'dashboard:decide_application' project.in_progress_application.id %}" class="d-inline" data-complete-form data-project-title="{{ project.title }}">
+                          {% csrf_token %}
+                          <input type="hidden" name="action" value="complete">
+                          <button class="btn btn-outline-success" type="button" data-complete-trigger>Complete project</button>
+                        </form>
+                      {% endif %}
                       {% if project.status_of_publishing == "drafted" %}
                         <form method="post" action="{% url 'projects:project_start' project.id %}" class="d-inline">
                           {% csrf_token %}
@@ -207,6 +221,54 @@
         noteEl.appendChild(metaWrap);
         list.prepend(noteEl);
         form.reset();
+      });
+    })();
+  </script>
+  <div class="modal fade" id="completeProjectModal" tabindex="-1" aria-labelledby="completeProjectLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="completeProjectLabel">Complete project</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to complete the project?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="confirmCompleteProject">Yes, complete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const modalEl = document.getElementById("completeProjectModal");
+      if (!modalEl || typeof bootstrap === "undefined") {
+        return;
+      }
+      const modal = new bootstrap.Modal(modalEl);
+      const confirmButton = document.getElementById("confirmCompleteProject");
+      let pendingForm = null;
+
+      document.addEventListener("click", function (event) {
+        const trigger = event.target.closest("[data-complete-trigger]");
+        if (!trigger) {
+          return;
+        }
+        const form = trigger.closest("[data-complete-form]");
+        if (!form) {
+          return;
+        }
+        pendingForm = form;
+        modal.show();
+      });
+
+      confirmButton.addEventListener("click", function () {
+        if (!pendingForm) {
+          return;
+        }
+        pendingForm.submit();
       });
     })();
   </script>

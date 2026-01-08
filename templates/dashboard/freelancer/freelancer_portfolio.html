@@ -3,6 +3,18 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/dashboard/style_portfolio.css' %}">
 {% endblock %}
+{% block extra_scripts %}
+<script>
+  const portfolioUpload = document.getElementById("portfolioUpload");
+  if (portfolioUpload) {
+    portfolioUpload.addEventListener("change", () => {
+      if (portfolioUpload.files.length) {
+        portfolioUpload.form.submit();
+      }
+    });
+  }
+</script>
+{% endblock %}
 
 {% block content %}
 <main class="portfolio-page py-5">
@@ -43,13 +55,17 @@
           </div>
         </div>
       {% else %}
-        <div class="portfolio-empty">
-          <div class="portfolio-empty-icon"><i class="bi bi-upload"></i></div>
+        <form class="portfolio-empty" method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input class="d-none" type="file" name="portfolio_file" id="portfolioUpload" accept=".pdf">
+          <label class="portfolio-empty-icon" for="portfolioUpload" role="button" aria-label="Upload portfolio PDF">
+            <i class="bi bi-upload"></i>
+          </label>
           <h4>Add your portfolio here</h4>
           <p class="text-muted">
             Upload a PDF or add a link in your profile settings to showcase your work.
           </p>
-        </div>
+        </form>
       {% endif %}
     </div>
   </div>

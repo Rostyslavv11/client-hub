@@ -30,11 +30,10 @@ class UserProfileForm(forms.ModelForm):
 class ClientProfileForm(forms.ModelForm):
     class Meta:
         model = ClientProfile
-        fields = ["company_name", "location", "hire_rate", "is_open_to_agencies"]
+        fields = ["company_name", "location", "is_open_to_agencies"]
         widgets = {
             "company_name": forms.TextInput(attrs={"class": "form-control"}),
             "location": forms.TextInput(attrs={"class": "form-control"}),
-            "hire_rate": forms.NumberInput(attrs={"class": "form-control"}),
             "is_open_to_agencies": forms.CheckboxInput(attrs={"class": "form-check-input"}),
         }
 

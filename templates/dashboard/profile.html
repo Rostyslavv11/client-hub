@@ -30,13 +30,13 @@
             <div class="text-end">
               <div class="profile-subtitle">Account status</div>
               <div class="d-flex flex-wrap gap-2 justify-content-end mt-2">
-                <span class="status-badge {% if user.email_verified %}verified{% else %}pending{% endif %}">
-                  <i class="bi {% if user.email_verified %}bi-check-circle{% else %}bi-exclamation-circle{% endif %}"></i>
-                  Email {% if user.email_verified %}verified{% else %}not verified{% endif %}
+                <span class="status-badge {% if user.email_verified %}verified{% elif user.email_verification_sent_at %}verifying{% else %}pending{% endif %}">
+                  <i class="bi {% if user.email_verified %}bi-check-circle{% elif user.email_verification_sent_at %}bi-clock{% else %}bi-exclamation-circle{% endif %}"></i>
+                  Email {% if user.email_verified %}verified{% elif user.email_verification_sent_at %}verifying{% else %}not verified{% endif %}
                 </span>
-                <span class="status-badge {% if user.phone_verified %}verified{% else %}pending{% endif %}">
-                  <i class="bi {% if user.phone_verified %}bi-check-circle{% else %}bi-exclamation-circle{% endif %}"></i>
-                  Phone {% if user.phone_verified %}verified{% else %}not verified{% endif %}
+                <span class="status-badge {% if user.phone_verified %}verified{% elif user.phone_verification_sent_at %}verifying{% else %}pending{% endif %}">
+                  <i class="bi {% if user.phone_verified %}bi-check-circle{% elif user.phone_verification_sent_at %}bi-clock{% else %}bi-exclamation-circle{% endif %}"></i>
+                  Phone {% if user.phone_verified %}verified{% elif user.phone_verification_sent_at %}verifying{% else %}not verified{% endif %}
                 </span>
               </div>
             </div>
@@ -162,8 +162,8 @@
                   <div class="fw-semibold">Email address</div>
                   <div class="profile-help">{{ user.email }}</div>
                 </div>
-                <span class="status-badge {% if user.email_verified %}verified{% else %}pending{% endif %}">
-                  {% if user.email_verified %}Verified{% else %}Not verified{% endif %}
+                <span class="status-badge {% if user.email_verified %}verified{% elif user.email_verification_sent_at %}verifying{% else %}pending{% endif %}">
+                  {% if user.email_verified %}Verified{% elif user.email_verification_sent_at %}Verifying{% else %}Not verified{% endif %}
                 </span>
               </div>
               <div class="d-flex justify-content-between align-items-center">
@@ -171,12 +171,56 @@
                   <div class="fw-semibold">Phone number</div>
                   <div class="profile-help">{{ user.phone_number|default:"Not provided" }}</div>
                 </div>
-                <span class="status-badge {% if user.phone_verified %}verified{% else %}pending{% endif %}">
-                  {% if user.phone_verified %}Verified{% else %}Not verified{% endif %}
+                <span class="status-badge {% if user.phone_verified %}verified{% elif user.phone_verification_sent_at %}verifying{% else %}pending{% endif %}">
+                  {% if user.phone_verified %}Verified{% elif user.phone_verification_sent_at %}Verifying{% else %}Not verified{% endif %}
                 </span>
               </div>
-              <div class="d-grid mt-4">
-                <button class="btn btn-outline-secondary profile-action-btn" type="button" disabled>Verify now</button>
+              <div class="d-grid mt-4 gap-2">
+                {% if user.email_verified %}
+                  <button class="btn btn-outline-secondary profile-action-btn" type="button" disabled>Email verified</button>
+                {% elif user.email_verification_sent_at %}
+                  {% if email_can_resend %}
+                    <form method="post" action="{% url 'dashboard:send_email_verification' %}">
+                      {% csrf_token %}
+                      <button class="btn btn-outline-secondary profile-action-btn" type="submit">Resend email</button>
+                    </form>
+                  {% else %}
+                    <button class="btn btn-outline-secondary profile-action-btn" type="button" disabled data-resend-countdown="{{ email_resend_seconds }}">
+                      Try again in {{ email_resend_minutes }} min
+                    </button>
+                  {% endif %}
+                {% else %}
+                  <form method="post" action="{% url 'dashboard:send_email_verification' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-secondary profile-action-btn" type="submit">Verify email</button>
+                  </form>
+                {% endif %}
+                {% if user.phone_verified %}
+                  <button class="btn btn-outline-secondary profile-action-btn" type="button" disabled>Phone verified</button>
+                {% elif user.phone_verification_sent_at %}
+                  <form method="post" action="{% url 'dashboard:verify_phone' %}">
+                    {% csrf_token %}
+                    <div class="input-group input-group-sm">
+                      <input class="form-control" type="text" name="phone_code" placeholder="Enter code" inputmode="numeric" maxlength="6">
+                      <button class="btn btn-outline-secondary profile-action-btn" type="submit">Confirm</button>
+                    </div>
+                  </form>
+                  {% if phone_can_resend %}
+                    <form method="post" action="{% url 'dashboard:send_phone_verification' %}">
+                      {% csrf_token %}
+                      <button class="btn btn-outline-secondary profile-action-btn mt-2" type="submit">Resend code</button>
+                    </form>
+                  {% else %}
+                    <button class="btn btn-outline-secondary profile-action-btn mt-2" type="button" disabled data-phone-resend-countdown="{{ phone_resend_seconds }}">
+                      Try again in {{ phone_resend_minutes }} min
+                    </button>
+                  {% endif %}
+                {% else %}
+                  <form method="post" action="{% url 'dashboard:send_phone_verification' %}">
+                    {% csrf_token %}
+                    <button class="btn btn-outline-secondary profile-action-btn" type="submit">Verify phone</button>
+                  </form>
+                {% endif %}
               </div>
             </div>
 
@@ -401,6 +445,46 @@
     initToggle("[data-password-toggle]", "passwordForm", true);
     initAvatarAutoSubmit();
     initPortfolioToggle();
+    const countdownButton = document.querySelector("[data-resend-countdown]");
+    if (countdownButton) {
+      let seconds = parseInt(countdownButton.getAttribute("data-resend-countdown"), 10);
+      if (Number.isNaN(seconds) || seconds <= 0) {
+        return;
+      }
+      const tick = () => {
+        if (seconds <= 0) {
+          countdownButton.textContent = "Resend email";
+          return;
+        }
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        const paddedSeconds = String(secs).padStart(2, "0");
+        countdownButton.textContent = `Try again in ${minutes}:${paddedSeconds}`;
+        seconds -= 1;
+        window.setTimeout(tick, 1000);
+      };
+      tick();
+    }
+    const phoneCountdownButton = document.querySelector("[data-phone-resend-countdown]");
+    if (phoneCountdownButton) {
+      let seconds = parseInt(phoneCountdownButton.getAttribute("data-phone-resend-countdown"), 10);
+      if (Number.isNaN(seconds) || seconds <= 0) {
+        return;
+      }
+      const tick = () => {
+        if (seconds <= 0) {
+          phoneCountdownButton.textContent = "Resend code";
+          return;
+        }
+        const minutes = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        const paddedSeconds = String(secs).padStart(2, "0");
+        phoneCountdownButton.textContent = `Try again in ${minutes}:${paddedSeconds}`;
+        seconds -= 1;
+        window.setTimeout(tick, 1000);
+      };
+      tick();
+    }
   })();
 </script>
 {% endblock %}
